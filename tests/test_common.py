@@ -106,6 +106,43 @@ class FadedTestCase(ArrayTestCase):
         # Determine test results.
         self.assertArrayEqual(exp, act)
 
+    def test_no_fade(self):
+        """If no fade is passed, the output of the decorated function
+        should be returned without being affected by a fade.
+        """
+        # Expected value.
+        exp = np.array([
+            [
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+            ],
+        ], dtype=np.float32)
+
+        # Test data and set up.
+        a = np.array([
+            [
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+            ],
+        ], dtype=np.float32)
+        b = exp.copy()
+
+        @c.faded
+        def spam(a, b):
+            return b
+
+        # Run test.
+        act = spam(a, b)
+
+        # Determine test results.
+        self.assertArrayEqual(exp, act)
+
 
 class MaskedTestCase(ArrayTestCase):
     def test_mask(self):
@@ -160,6 +197,43 @@ class MaskedTestCase(ArrayTestCase):
 
         # Run test.
         act = spam(a, b, mask)
+
+        # Determine test results.
+        self.assertArrayEqual(exp, act)
+
+    def test_no_mask(self):
+        """If no mask is passed, the output of the decorated function
+        should not be masked.
+        """
+        # Expected value.
+        exp = np.array([
+            [
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+            ],
+        ], dtype=np.float32)
+
+        # Test data and set up.
+        a = np.array([
+            [
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+            ],
+        ], dtype=np.float32)
+        b = exp.copy()
+
+        @c.masked
+        def spam(a, b):
+            return b
+
+        # Run test.
+        act = spam(a, b)
 
         # Determine test results.
         self.assertArrayEqual(exp, act)

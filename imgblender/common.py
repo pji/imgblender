@@ -31,11 +31,17 @@ def faded(fn: Callable) -> Callable:
     @wraps(fn)
     def wrapper(a: np.ndarray,
                 b: np.ndarray,
-                fade: float,
+                fade: float = 1.0,
                 *args, **kwargs) -> np.ndarray:
+        # Get the blended image from the masked function.
         ab = fn(a, b, *args, **kwargs)
-        if fade == 1:
+
+        # If the fade wouldn't change the blended image, don't waste
+        # time trying to calculate the effect.
+        if fade == 1.0:
             return ab
+
+        # Apply the fade and return the result.
         ab = a + (ab - a) * fade
         return ab
     return wrapper
@@ -51,7 +57,7 @@ def masked(fn: Callable) -> Callable:
         # Get the blended image from the decorated function.
         ab = fn(a, b, *args, **kwargs)
 
-        # If there wasn't a mask passed in, dont waste time
+        # If there wasn't a mask passed in, don't waste time
         # trying to mask the effects.
         if mask is None:
             return ab
