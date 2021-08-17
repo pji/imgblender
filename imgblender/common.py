@@ -5,7 +5,7 @@ common
 Common utility functions for the imgblender module.
 """
 from functools import wraps
-from typing import Callable
+from typing import Callable, Union
 
 import numpy as np
 
@@ -37,5 +37,26 @@ def faded(fn: Callable) -> Callable:
         if fade == 1:
             return ab
         ab = a + (ab - a) * fade
+        return ab
+    return wrapper
+
+
+def masked(fn: Callable) -> Callable:
+    """Apply a blending mask to the image."""
+    @wraps(fn)
+    def wrapper(a: np.ndarray,
+                b: np.ndarray,
+                mask: Union[None, np.ndarray] = None,
+                *args, **kwargs) -> np.ndarray:
+        # Get the blended image from the decorated function.
+        ab = fn(a, b, *args, **kwargs)
+
+        # If there wasn't a mask passed in, dont waste time
+        # trying to mask the effects.
+        if mask is None:
+            return ab
+
+        # Apply the mask and return the result.
+        ab = a * (1 - mask) + ab * mask
         return ab
     return wrapper
