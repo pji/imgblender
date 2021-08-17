@@ -56,3 +56,52 @@ class ClippedTestCase(ArrayTestCase):
 
         # Determine test result.
         self.assertArrayEqual(exp, act)
+
+
+class FadedTestCase(ArrayTestCase):
+    def test_fades(self):
+        """When applied to a function, the faded decorator should
+        adjust how much the blending operation affects the base
+        image by the given amount.
+        """
+        # Expected value.
+        exp = np.array([
+            [
+                [0.5, 0.5, 0.5, 0.5, 0.5, ],
+                [0.5, 0.5, 0.5, 0.5, 0.5, ],
+                [0.5, 0.5, 0.5, 0.5, 0.5, ],
+                [0.5, 0.5, 0.5, 0.5, 0.5, ],
+                [0.5, 0.5, 0.5, 0.5, 0.5, ],
+            ],
+        ], dtype=np.float32)
+
+        # Test data and set up.
+        a = np.array([
+            [
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+            ],
+        ], dtype=np.float32)
+        b = np.array([
+            [
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+            ],
+        ], dtype=np.float32)
+        fade = 0.5
+
+        @c.faded
+        def spam(a, b):
+            return b
+
+        # Run test.
+        act = spam(a, b, fade)
+
+        # Determine test results.
+        self.assertArrayEqual(exp, act)
