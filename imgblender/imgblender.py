@@ -12,7 +12,7 @@ Many of these are taken from:
 """
 import numpy as np
 
-from imgblender.common import will_clip, can_fade, can_mask, print_array, A, B, C, D
+from imgblender.common import will_clip, can_fade, can_mask, print_array
 
 
 # Simple replacement blends.
@@ -101,7 +101,7 @@ def multiply(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_mask
 @can_fade
 def color_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
-    """Similar to multiply, but is darker and produces higher 
+    """Similar to multiply, but is darker and produces higher
     contrast.
 
     :param a: The existing values. This is like the bottom layer in
@@ -542,6 +542,7 @@ def vivid_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 
 
 if __name__ == '__main__':
+    from imgblender.common import A, B, C, D
     fn = vivid_light
     ab = fn(A, B)
 #     ab = fn(C, D)
