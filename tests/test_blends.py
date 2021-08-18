@@ -1,6 +1,8 @@
 """
-test_blender
-~~~~~~~~~~~~~~~
+test_blends
+~~~~~~~~~~~
+
+Unit tests for the imgblender.blends module.
 """
 import numpy as np
 
