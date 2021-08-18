@@ -1,10 +1,10 @@
 """
-test_imgblender
+test_blender
 ~~~~~~~~~~~~~~~
 """
 import numpy as np
 
-from imgblender import imgblender as ib
+from imgblender import blends
 from tests.common import ArrayTestCase, A, B, C, D
 
 
@@ -34,7 +34,7 @@ class ColorBurnTestCase(BlendTestCase):
                 [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.color_burn
+        blend = blends.color_burn
         self.run_test(blend, exp)
 
 
@@ -54,7 +54,7 @@ class ColorDodgeTestCase(BlendTestCase):
                 [0.0000, 0.2000, 0.3333, 0.4286, 0.5000],
             ],
         ], dtype=np.float32)
-        blend = ib.color_dodge
+        blend = blends.color_dodge
         self.run_test(blend, exp, C, D)
 
 
@@ -70,7 +70,7 @@ class DarkerTestCase(BlendTestCase):
                 [0.00, 0.25, 0.50, 0.25, 0.00, ],
             ],
         ], dtype=np.float32)
-        blend = ib.darker
+        blend = blends.darker
         self.run_test(blend, exp)
 
 
@@ -88,7 +88,7 @@ class DifferenceTestCase(BlendTestCase):
                 [1.0000, 0.5000, 0.0000, 0.5000, 1.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.difference
+        blend = blends.difference
         self.run_test(blend, exp)
 
 
@@ -106,7 +106,7 @@ class ExclusionTestCase(BlendTestCase):
                 [1.0000, 0.6250, 0.5000, 0.6250, 1.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.exclusion
+        blend = blends.exclusion
         self.run_test(blend, exp)
 
 
@@ -122,7 +122,7 @@ class HardLightTestCase(BlendTestCase):
                 [1.0000, 0.6250, 0.5000, 0.3750, 0.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.hard_light
+        blend = blends.hard_light
         self.run_test(blend, exp)
 
 
@@ -138,7 +138,7 @@ class HardMixTestCase(BlendTestCase):
                 [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.hard_mix
+        blend = blends.hard_mix
         self.run_test(blend, exp)
 
 
@@ -154,7 +154,7 @@ class LighterTestCase(BlendTestCase):
                 [1.0000, 0.7500, 0.5000, 0.7500, 1.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.lighter
+        blend = blends.lighter
         self.run_test(blend, exp)
 
 
@@ -172,7 +172,7 @@ class LinearBurnTestCase(BlendTestCase):
                 [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.linear_burn
+        blend = blends.linear_burn
         self.run_test(blend, exp)
 
 
@@ -188,7 +188,7 @@ class LinearDodgeTestCase(BlendTestCase):
                 [0.5000, 0.5000, 0.5000, 0.5000, 0.5000],
             ],
         ], dtype=np.float32)
-        blend = ib.linear_dodge
+        blend = blends.linear_dodge
         self.run_test(blend, exp, C, D)
 
 
@@ -204,7 +204,7 @@ class LinearLightTestCase(BlendTestCase):
                 [1.0000, 0.7500, 0.5000, 0.2500, 0.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.linear_light
+        blend = blends.linear_light
         self.run_test(blend, exp)
 
 
@@ -220,7 +220,7 @@ class MultiplyTestCase(BlendTestCase):
                 [0.0000, 0.1875, 0.2500, 0.1875, 0.0000, ],
             ],
         ], dtype=np.float32)
-        blend = ib.multiply
+        blend = blends.multiply
         self.run_test(blend, exp)
 
 
@@ -236,7 +236,7 @@ class OverlayTestCase(BlendTestCase):
                 [1.0000, 0.6250, 0.5000, 0.3750, 0.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.overlay
+        blend = blends.overlay
         self.run_test(blend, exp)
 
 
@@ -252,12 +252,12 @@ class PinLightTestCase(BlendTestCase):
                 [1.0000, 0.5000, 0.5000, 0.5000, 0.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.pin_light
+        blend = blends.pin_light
         self.run_test(blend, exp)
 
 
 class ReplaceTestCase(BlendTestCase):
-    def test_replace_(self):
+    def test_replace(self):
         """When passed two sets of image data, return the second set."""
         # Expected value.
         exp = np.array([
@@ -269,7 +269,7 @@ class ReplaceTestCase(BlendTestCase):
         ], dtype=np.float32)
 
         # Test data and set up.
-        blend = ib.replace
+        blend = blends.replace
         a = np.array([
             [
                 [0.0, 0.0, 0.0, ],
@@ -298,7 +298,7 @@ class ScreenTestCase(BlendTestCase):
                 [1.0000, 0.8125, 0.7500, 0.8125, 1.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.screen
+        blend = blends.screen
         self.run_test(blend, exp)
 
 
@@ -314,7 +314,7 @@ class SoftLightTestCase(BlendTestCase):
                 [0.0000, 0.3750, 0.5000, 0.6562, 1.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.soft_light
+        blend = blends.soft_light
         self.run_test(blend, exp)
 
 
@@ -330,5 +330,5 @@ class VividLightTestCase(BlendTestCase):
                 [0.0000, 0.5000, 0.5000, 0.5000, 0.0000],
             ],
         ], dtype=np.float32)
-        blend = ib.vivid_light
+        blend = blends.vivid_light
         self.run_test(blend, exp)

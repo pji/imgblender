@@ -17,11 +17,12 @@ import pycodestyle as pcs
 import rstcheck
 
 # Import modules with doctests
+from imgblender import blends
 
 
 # Script configuration.
 doctest_modules = [
-    # Put imported modules with doctests here.
+    blends,
 ]
 ignore = []
 python_files = [
