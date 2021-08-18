@@ -9,9 +9,9 @@ from tests.common import ArrayTestCase
 
 
 # Test cases.
-class ClippedTestCase(ArrayTestCase):
+class WillClipTestCase(ArrayTestCase):
     def test_clips(self):
-        """When applied to a function, the clipped decorator should
+        """When applied to a function, the will_clip decorator should
         set any values in the output of the decorated function that
         are greater than one to one and any values that are less
         than zero to zero.
@@ -47,7 +47,7 @@ class ClippedTestCase(ArrayTestCase):
             ],
         ], dtype=np.float32)
 
-        @c.clipped
+        @c.will_clip
         def spam(a, b):
             return a + b
 
@@ -58,7 +58,7 @@ class ClippedTestCase(ArrayTestCase):
         self.assertArrayEqual(exp, act)
 
 
-class FadedTestCase(ArrayTestCase):
+class CanFadeTestCase(ArrayTestCase):
     def test_fades(self):
         """When applied to a function, the faded decorator should
         adjust how much the blending operation affects the base
@@ -96,7 +96,7 @@ class FadedTestCase(ArrayTestCase):
         ], dtype=np.float32)
         fade = 0.5
 
-        @c.faded
+        @c.can_fade
         def spam(a, b):
             return b
 
@@ -133,7 +133,7 @@ class FadedTestCase(ArrayTestCase):
         ], dtype=np.float32)
         b = exp.copy()
 
-        @c.faded
+        @c.can_fade
         def spam(a, b):
             return b
 
@@ -144,9 +144,9 @@ class FadedTestCase(ArrayTestCase):
         self.assertArrayEqual(exp, act)
 
 
-class MaskedTestCase(ArrayTestCase):
+class CanMaskTestCase(ArrayTestCase):
     def test_mask(self):
-        """When applied to a function, the masked decorator should
+        """When applied to a function, the can_mask decorator should
         adjust how much the blending operation affects each value
         of the base image based on the appropriate value of the given
         mask.
@@ -191,7 +191,7 @@ class MaskedTestCase(ArrayTestCase):
             ],
         ], dtype=np.float32)
 
-        @c.masked
+        @c.can_mask
         def spam(a, b):
             return b
 
@@ -203,7 +203,7 @@ class MaskedTestCase(ArrayTestCase):
 
     def test_no_mask(self):
         """If no mask is passed, the output of the decorated function
-        should not be masked.
+        should not be can_mask.
         """
         # Expected value.
         exp = np.array([
@@ -228,7 +228,7 @@ class MaskedTestCase(ArrayTestCase):
         ], dtype=np.float32)
         b = exp.copy()
 
-        @c.masked
+        @c.can_mask
         def spam(a, b):
             return b
 

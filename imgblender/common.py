@@ -11,7 +11,7 @@ import numpy as np
 
 
 # Decorators.
-def clipped(fn: Callable) -> Callable:
+def will_clip(fn: Callable) -> Callable:
     """Blends that use division or unbounded addition or
     subtraction can overflow the scale of the image. This will
     keep the image in scale by clipping the values below zero
@@ -26,8 +26,8 @@ def clipped(fn: Callable) -> Callable:
     return wrapper
 
 
-def faded(fn: Callable) -> Callable:
-    """Adjust how much the operation affects the base array."""
+def can_fade(fn: Callable) -> Callable:
+    """Adjust how much the blend affects the base array."""
     @wraps(fn)
     def wrapper(a: np.ndarray,
                 b: np.ndarray,
@@ -47,7 +47,7 @@ def faded(fn: Callable) -> Callable:
     return wrapper
 
 
-def masked(fn: Callable) -> Callable:
+def can_mask(fn: Callable) -> Callable:
     """Apply a blending mask to the image."""
     @wraps(fn)
     def wrapper(a: np.ndarray,
@@ -66,3 +66,60 @@ def masked(fn: Callable) -> Callable:
         ab = a * (1 - mask) + ab * mask
         return ab
     return wrapper
+
+
+# Debugging utilities.
+def print_array(a: np.ndarray, depth: int = 0, color: bool = True) -> None:
+    """Write the values of the given array to stdout."""
+    if len(a.shape) > 1:
+        print(' ' * (4 * depth) + '[')
+        for i in range(a.shape[0]):
+            print_array(a[i], depth + 1, color)
+        print(' ' * (4 * depth) + '],')
+
+    else:
+        if a.dtype == np.float32 or a.dtype == np.float64:
+            tmp = '{:>1.4f}'
+        else:
+            tmp = '{}'
+        nums = [tmp.format(n) for n in a]
+        print(' ' * (4 * depth) + '[' + ', '.join(nums) + '],')
+
+
+# Common sample data.
+A = np.array([
+    [
+        [0.00, 0.25, 0.50, 0.75, 1.00, ],
+        [0.25, 0.50, 0.75, 1.00, 0.75, ],
+        [0.50, 0.75, 1.00, 0.75, 0.50, ],
+        [0.75, 1.00, 0.75, 0.50, 0.25, ],
+        [1.00, 0.75, 0.50, 0.25, 0.00, ],
+    ],
+], dtype=np.float32)
+B = np.array([
+    [
+        [1.00, 0.75, 0.50, 0.25, 0.00, ],
+        [0.75, 1.00, 0.75, 0.50, 0.25, ],
+        [0.50, 0.75, 1.00, 0.75, 0.50, ],
+        [0.25, 0.50, 0.75, 1.00, 0.75, ],
+        [0.00, 0.25, 0.50, 0.75, 1.00, ],
+    ],
+], dtype=np.float32)
+C = np.array([
+    [
+        [0.5000, 0.3750, 0.2500, 0.1250, 0.0000, ],
+        [0.3750, 0.2500, 0.1250, 0.0000, 0.1250, ],
+        [0.2500, 0.1250, 0.0000, 0.1250, 0.2500, ],
+        [0.1250, 0.0000, 0.1250, 0.2500, 0.3750, ],
+        [0.0000, 0.1250, 0.2500, 0.3750, 0.5000, ],
+    ],
+], dtype=np.float32)
+D = np.array([
+    [
+        [0.0000, 0.1250, 0.2500, 0.3750, 0.5000, ],
+        [0.1250, 0.0000, 0.1250, 0.2500, 0.3750, ],
+        [0.2500, 0.1250, 0.0000, 0.1250, 0.2500, ],
+        [0.3750, 0.2500, 0.1250, 0.0000, 0.1250, ],
+        [0.5000, 0.3750, 0.2500, 0.1250, 0.0000, ],
+    ],
+], dtype=np.float32)
