@@ -1,5 +1,5 @@
 docutils==0.16
-imgwriter==0.0.2
+imgwriter==0.0.3
 numpy==1.19.5
 opencv-python==4.5.1.48
 pycodestyle==2.6.0
