@@ -1,4 +1,6 @@
-docutils==0.17.1
-numpy==1.21.2
-pycodestyle==2.7.0
+docutils==0.16
+imgwriter==0.0.2
+numpy==1.19.5
+opencv-python==4.5.1.48
+pycodestyle==2.6.0
 rstcheck==3.3.1

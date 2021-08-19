@@ -4,5 +4,95 @@ imgblender
 
 A python package for blending image data.
 """
+from argparse import ArgumentParser
+from inspect import getmembers, isfunction
+from typing import Callable
+
+import imgwriter as iw
+
+from imgblender import blends
+
+
+# Private utility functions.
+def _get_blends() -> dict[str, Callable]:
+    """Get the list of blending functions."""
+    members = getmembers(blends, isfunction)
+    blends_ = [blend for blend in members if not blend[0].startswith('can_')]
+    blends_ = [blend for blend in blends_ if not blend[0].startswith('will_')]
+    return dict(blends_)
+
+
+# Public functions.
+def blend_images(file_a: str,
+                 file_b: str,
+                 blend: Callable,
+                 file_ab: str) -> None:
+    """Blend images."""
+    # Load files.
+    a = iw.read_image(file_a)
+    b = iw.read_image(file_b)
+
+    # Blend the image.
+    ab = blend(a, b)
+
+    # Save file.
+    iw.save(file_ab, ab)
+
+
+# Execution mainline.
+def main() -> None:
+    # Define the command line options.
+    blends_ = _get_blends()
+    options = {
+        'existing': {
+            'args': ('existing', ),
+            'kwargs': {
+                'type': str,
+                'action': 'store',
+                'help': 'The base file for the blend.',
+            },
+        },
+        'blending': {
+            'args': ('blending', ),
+            'kwargs': {
+                'type': str,
+                'action': 'store',
+                'help': 'The blending file for the blend.',
+            },
+        },
+        'blend': {
+            'args': ('blend', ),
+            'kwargs': {
+                'choices': blends_.keys(),
+                'action': 'store',
+                'help': 'The blend for the images.',
+            },
+        },
+        'blended': {
+            'args': ('blended', ),
+            'kwargs': {
+                'type': str,
+                'action': 'store',
+                'help': 'The blend for the images.',
+            },
+        },
+    }
+
+    # Read the command line arguments.
+    p = ArgumentParser(
+        prog='imgblender',
+        description='Blend images or video.',
+    )
+    for option in options:
+        args = options[option]['args']
+        kwargs = options[option]['kwargs']
+        p.add_argument(*args, **kwargs)
+    args = p.parse_args()
+    blend = blends_[args.blend]
+
+    # Run the blend.
+    blend_images(args.existing, args.blending, blend, args.blended)
+
+
 if __name__ == '__main__':
-    print('imgblender cannot be used from the CLI at this time.')
+    main()
