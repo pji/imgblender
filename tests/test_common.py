@@ -9,55 +9,6 @@ from tests.common import ArrayTestCase
 
 
 # Test cases.
-class WillClipTestCase(ArrayTestCase):
-    def test_clips(self):
-        """When applied to a function, the will_clip decorator should
-        set any values in the output of the decorated function that
-        are greater than one to one and any values that are less
-        than zero to zero.
-        """
-        # Expected value.
-        exp = np.array([
-            [
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-            ]
-        ], dtype=np.float32)
-
-        # Test data and set up.
-        a = np.array([
-            [
-                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
-                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
-                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
-                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
-                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
-            ],
-        ], dtype=np.float32)
-        b = np.array([
-            [
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-            ],
-        ], dtype=np.float32)
-
-        @c.will_clip
-        def spam(a, b):
-            return a + b
-
-        # Run test.
-        act = spam(a, b)
-
-        # Determine test result.
-        self.assertArrayEqual(exp, act)
-
-
 class CanFadeTestCase(ArrayTestCase):
     def test_fades(self):
         """When applied to a function, the faded decorator should
@@ -236,4 +187,105 @@ class CanMaskTestCase(ArrayTestCase):
         act = spam(a, b)
 
         # Determine test results.
+        self.assertArrayEqual(exp, act)
+
+
+class WillClipTestCase(ArrayTestCase):
+    def test_clips(self):
+        """When applied to a function, the will_clip decorator should
+        set any values in the output of the decorated function that
+        are greater than one to one and any values that are less
+        than zero to zero.
+        """
+        # Expected value.
+        exp = np.array([
+            [
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+            ]
+        ], dtype=np.float32)
+
+        # Test data and set up.
+        a = np.array([
+            [
+                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
+                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
+                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
+                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
+                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
+            ],
+        ], dtype=np.float32)
+        b = np.array([
+            [
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+            ],
+        ], dtype=np.float32)
+
+        @c.will_clip
+        def spam(a, b):
+            return a + b
+
+        # Run test.
+        act = spam(a, b)
+
+        # Determine test result.
+        self.assertArrayEqual(exp, act)
+
+
+class WillMatchSizeTestCase(ArrayTestCase):
+    def test_clips(self):
+        """When applied to a function, the will_match_size decorator
+        should increase the size of a smaller image to the size of
+        the larger image. The fill for the added area should be black.
+        """
+        # Expected value.
+        exp = np.array([
+            [
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
+            ]
+        ], dtype=np.float32)
+
+        # Test data and set up.
+        a = np.array([
+            [
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+            ],
+        ], dtype=np.float32)
+        b = np.array([
+            [
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
+            ],
+        ], dtype=np.float32)
+
+        @c.will_match_size
+        def spam(a, b):
+            return a + b
+
+        # Run test.
+        act = spam(a, b)
+
+        # Determine test result.
         self.assertArrayEqual(exp, act)

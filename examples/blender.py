@@ -1,25 +1,24 @@
 """
-imgblender
-~~~~~~~~~~
+blender
+~~~~~~~
 
-A python package for blending image data.
+A python script for blending image data.
 """
 from argparse import ArgumentParser
 from inspect import getmembers, isfunction
 from typing import Callable
 
 import imgwriter as iw
-
-from imgblender import blends
+import imgblender as ib
 
 
 # Private utility functions.
 def _get_blends() -> dict[str, Callable]:
     """Get the list of blending functions."""
-    members = getmembers(blends, isfunction)
-    blends_ = [blend for blend in members if not blend[0].startswith('can_')]
-    blends_ = [blend for blend in blends_ if not blend[0].startswith('will_')]
-    return dict(blends_)
+    members = getmembers(ib, isfunction)
+    blends = [blend for blend in members if not blend[0].startswith('can_')]
+    blends = [blend for blend in blends if not blend[0].startswith('will_')]
+    return dict(blends)
 
 
 # Public functions.

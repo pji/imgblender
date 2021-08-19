@@ -18,8 +18,8 @@ to anyone else, but here it is.
 How do I run the code?
 **********************
 You can clone the repository to your local system and play with it.
-It's still early in development, so it's really only useful as a
-module you import into other python code.
+It's intended to be used as a module by other python applications. You
+can find examples of how to use it in the examples directory.
 
 
 ***************

@@ -46,12 +46,13 @@ operations is:
 """
 import numpy as np
 
-from imgblender.common import will_clip, can_fade, can_mask
+from imgblender.common import can_fade, can_mask, will_clip, will_match_size
 
 
 # Simple replacement blends.
 @can_mask
 @can_fade
+@will_match_size
 def replace(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Simple replacement filter. Can double as an opacity filter
     if passed can_fade amount, but otherwise this will just replace the
@@ -80,6 +81,7 @@ def replace(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def darker(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Replaces values in the existing image with values from the
     blending image when the value in the blending image is darker.
@@ -108,6 +110,7 @@ def darker(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def multiply(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Multiplies the values of the two images, leading to darker
     values. This is useful for shadows and similar situations.
@@ -134,6 +137,7 @@ def multiply(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def color_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Similar to multiply, but is darker and produces higher
     contrast.
@@ -164,6 +168,7 @@ def color_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def linear_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Similar to multiply, but is darker, produces less saturated
     colors than color burn, and produces more contrast in the shadows.
@@ -191,6 +196,7 @@ def linear_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def lighter(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Replaces values in the existing image with values from the
     blending image when the value in the blending image is lighter.
@@ -219,6 +225,7 @@ def lighter(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def screen(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Performs an inverse multiplication on the colors from the two
     images then inverse the colors again. This leads to overall
@@ -249,6 +256,7 @@ def screen(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def color_dodge(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Similar to screen, but brighter and decreases the contrast.
 
@@ -276,6 +284,7 @@ def color_dodge(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def linear_dodge(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Similar to screen but produces stronger results.
 
@@ -302,6 +311,7 @@ def linear_dodge(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def difference(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Takes the absolute value of the difference of the two values.
     This is often useful in creating complex patterns or when
@@ -329,6 +339,7 @@ def difference(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def exclusion(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Similar to difference, with the result tending to gray
     rather than black.
@@ -357,6 +368,7 @@ def exclusion(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def hard_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Similar to the blending image being a harsh light shining
     on the existing image.
@@ -386,6 +398,7 @@ def hard_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def hard_mix(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Increases the saturation and contrast. It's best used with
     masks and can_fade.
@@ -415,6 +428,7 @@ def hard_mix(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def linear_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Combines linear dodge and linear burn.
 
@@ -441,6 +455,7 @@ def linear_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def overlay(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Combines screen and multiply blends.
 
@@ -470,6 +485,7 @@ def overlay(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def pin_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Combines lighten and darken blends.
 
@@ -509,6 +525,7 @@ def pin_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def soft_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Similar to overlay, but biases towards the blending value
     rather than the existing value.
@@ -540,6 +557,7 @@ def soft_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @will_clip
 @can_mask
 @can_fade
+@will_match_size
 def vivid_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Good for color grading when faded.
 
