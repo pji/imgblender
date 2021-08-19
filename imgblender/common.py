@@ -10,22 +10,11 @@ from typing import Callable, Union
 import numpy as np
 
 
+# Global data.
+X, Y, Z = 2, 1, 0
+
+
 # Decorators.
-def will_clip(fn: Callable) -> Callable:
-    """Blends that use division or unbounded addition or
-    subtraction can overflow the scale of the image. This will
-    keep the image in scale by clipping the values below zero
-    to zero and the values above one to one.
-    """
-    @wraps(fn)
-    def wrapper(a: np.ndarray, b: np.ndarray, *args, **kwargs) -> np.ndarray:
-        ab = fn(a, b, *args, **kwargs)
-        ab[ab < 0.0] = 0.0
-        ab[ab > 1.0] = 1.0
-        return ab
-    return wrapper
-
-
 def can_fade(fn: Callable) -> Callable:
     """Adjust how much the blend affects the base array."""
     @wraps(fn)
@@ -68,6 +57,43 @@ def can_mask(fn: Callable) -> Callable:
     return wrapper
 
 
+def will_clip(fn: Callable) -> Callable:
+    """Blends that use division or unbounded addition or
+    subtraction can overflow the scale of the image. This will
+    keep the image in scale by clipping the values below zero
+    to zero and the values above one to one.
+    """
+    @wraps(fn)
+    def wrapper(a: np.ndarray, b: np.ndarray, *args, **kwargs) -> np.ndarray:
+        ab = fn(a, b, *args, **kwargs)
+        ab[ab < 0.0] = 0.0
+        ab[ab > 1.0] = 1.0
+        return ab
+    return wrapper
+
+
+def will_match_size(fn: Callable) -> Callable:
+    """If the given images are different sizes, increase the size of
+    the smaller image to match the larger image. Since this affects
+    the size of the images, this will need to go before any decorators
+    that use the original images to affect the resulting image.
+    """
+    @wraps(fn)
+    def wrapper(a: np.ndarray, b: np.ndarray, *args, **kwargs) -> np.ndarray:
+        # Calculate the new size of the images.
+        size = [max(dim) for dim in zip(a.shape, b.shape)]
+
+        # Resize the dimensions of the arrays that are smaller than
+        # the new array size.
+        a = _resize_array(a, size)
+        b = _resize_array(b, size)
+
+        # Blend and return.
+        ab = fn(a, b, *args, **kwargs)
+        return ab
+    return wrapper
+
+
 # Debugging utilities.
 def print_array(a: np.ndarray, depth: int = 0, color: bool = True) -> None:
     """Write the values of the given array to stdout."""
@@ -84,6 +110,24 @@ def print_array(a: np.ndarray, depth: int = 0, color: bool = True) -> None:
             tmp = '{}'
         nums = [tmp.format(n) for n in a]
         print(' ' * (4 * depth) + '[' + ', '.join(nums) + '],')
+
+
+# Private utility functions.
+def _resize_array(a: np.ndarray,
+                  size: tuple[int],
+                  fill: float = 0.0) -> np.ndarray:
+    """Resize the array to the given size."""
+    # Create array at the new size.
+    resized = np.full(size, fill, dtype=a.dtype)
+
+    # Determine the amount the image has to be inset by in each dimension.
+    size_diff = [n - o for n, o in zip(size, a.shape)]
+    pad = [dim // 2 for dim in size_diff]
+    end = [n + o for n, o in zip(pad, a.shape)]
+
+    # Place the image and return.
+    resized[pad[Z]:end[Z], pad[Y]:end[Y], pad[X]:end[X]] = a
+    return resized
 
 
 # Common sample data.
