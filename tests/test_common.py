@@ -239,6 +239,226 @@ class WillClipTestCase(ArrayTestCase):
         self.assertArrayEqual(exp, act)
 
 
+class WillColorizeTestCase(ArrayTestCase):
+    def test_colorize_a(self):
+        """Given an RGB image and a grayscale image, the grayscale
+        image should be converted to RGB.
+        """
+        # Expected value.
+        exp = np.array([
+            [
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+            ]
+        ], dtype=np.float32)
+
+        # Test data and set up.
+        a = np.array([
+            [
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+            ],
+        ], dtype=np.float32)
+        b = np.array([
+            [
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+            ],
+        ], dtype=np.float32)
+
+        @c.will_colorize
+        def spam(a, b):
+            return b
+
+        # Run test.
+        act = spam(a, b)
+
+        # Determine test result.
+        self.assertArrayEqual(exp, act)
+
+    def test_colorize_b(self):
+        """Given an RGB image and a grayscale image, the grayscale
+        image should be converted to RGB.
+        """
+        # Expected value.
+        exp = np.array([
+            [
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+            ]
+        ], dtype=np.float32)
+
+        # Test data and set up.
+        a = np.array([
+            [
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+            ],
+        ], dtype=np.float32)
+        b = np.array([
+            [
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+            ],
+        ], dtype=np.float32)
+
+        @c.will_colorize
+        def spam(a, b):
+            return a
+
+        # Run test.
+        act = spam(a, b)
+
+        # Determine test result.
+        self.assertArrayEqual(exp, act)
+
+    def test_no_effect_when_both_grayscale(self):
+        """If both images only have one channel, the decorator doesn't
+        change either array.
+        """
+        # Expected value.
+        exp = np.array([
+            [
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+            ]
+        ], dtype=np.float32)
+
+        # Test data and set up.
+        a = np.array([
+            [
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+                [0.0, 0.0, 0.5, 1.0, 1.0, ],
+            ],
+        ], dtype=np.float32)
+        b = np.array([
+            [
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+                [0.0, 0.0, 0.0, 0.0, 0.0, ],
+            ],
+        ], dtype=np.float32)
+
+        @c.will_colorize
+        def spam(a, b):
+            return a + b
+
+        # Run test.
+        act = spam(a, b)
+
+        # Determine test result.
+        self.assertArrayEqual(exp, act)
+
+    def test_no_effect_when_both_rgb(self):
+        """If both images have three channels, the decorator doesn't
+        change either array.
+        """
+        # Expected value.
+        exp = np.array([
+            [
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+            ]
+        ], dtype=np.float32)
+
+        # Test data and set up.
+        a = np.array([
+            [
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+            ],
+        ], dtype=np.float32)
+        b = np.array([
+            [
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
+            ]
+        ], dtype=np.float32)
+
+        @c.will_colorize
+        def spam(a, b):
+            return a + b
+
+        # Run test.
+        act = spam(a, b)
+
+        # Determine test result.
+        self.assertArrayEqual(exp, act)
+
+    def test_no_effect_when_off(self):
+        """When False is passed to the colorize parameter, the
+        decorator should not change the image data.
+        """
+        # Expected value.
+        exp = np.array([
+            [
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+            ],
+        ], dtype=np.float32)
+
+        # Test data and set up.
+        a = np.array([
+            [
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+            ],
+        ], dtype=np.float32)
+        b = exp.copy()
+        colorize = False
+
+        @c.will_colorize
+        def spam(a, b):
+            return b
+
+        # Run test.
+        act = spam(a, b, colorize=colorize)
+
+        # Determine test result.
+        self.assertArrayEqual(exp, act)
+
+
 class WillMatchSizeTestCase(ArrayTestCase):
     def test_clips(self):
         """When applied to a function, the will_match_size decorator
