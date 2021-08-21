@@ -77,15 +77,19 @@ def will_colorize(fn: Callable) -> Callable:
     channels.
     """
     @wraps(fn)
-    def wrapper(a: np.ndarray, b: np.ndarray, *args, **kwargs) -> np.ndarray:
+    def wrapper(a: np.ndarray,
+                b: np.ndarray,
+                colorize: bool = True,
+                *args, **kwargs) -> np.ndarray:
         # If the image have different numbers of color channels,
         # add color channels to the one with the fewest.
-        a_dims = len(a.shape)
-        b_dims = len(b.shape)
-        if a_dims + 1 == b_dims and b.shape[-1] == 3:
-            a = _grayscale_to_rgb(a)
-        elif b_dims + 1 == a_dims and a.shape[-1] == 3:
-            b = _grayscale_to_rgb(b)
+        if colorize:
+            a_dims = len(a.shape)
+            b_dims = len(b.shape)
+            if a_dims + 1 == b_dims and b.shape[-1] == 3:
+                a = _grayscale_to_rgb(a)
+            elif b_dims + 1 == a_dims and a.shape[-1] == 3:
+                b = _grayscale_to_rgb(b)
 
         # Blend and return.
         ab = fn(a, b, *args, **kwargs)

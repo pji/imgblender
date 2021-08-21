@@ -33,6 +33,8 @@ operations is:
 
     :param a: The image data from the existing image.
     :param b: The image data from the blending image.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) (From @can_fade.) How much the blend
         should impact the final output. This is a percentage, so the
         range of valid values are 0 <= x <= 1.
@@ -43,6 +45,75 @@ operations is:
         by the operation.
     :return: A :class:numpy.ndarray object.
     :rtype: numpy.ndarray
+
+
+Colorize, Array Shape, and Color Channels
+=========================================
+The blends themselves don't care about the dimensionality of the given
+arrays. It just needs the two arrays to have the same shape by the
+time it does the blend. While this was originally written for image
+data, to the algorithms themselves, it's all just floating-point math.
+
+However, there is one case where a bias towards image data shows up:
+
+    * You pass two arrays with differing shapes.
+    * The size of their last dimension is different.
+    * One of the two arrays has a last dimension with size three.
+
+To perform the blending algorithm, the two arrays must be the same
+shape. In most cases, differences between the two shapes will be
+handled through the ```will_match_size``` decorator, which adds zeros
+to the smaller array to make their sizes match. However, in the case
+described above, something different happens.
+
+Since color image data often has a last dimension size of three,
+representing color channels, the case above is intercepted by the
+```will_colorize``` decorator. That decorator assumes the array
+that doesn't have a last dimension size of three is single channel
+image data ("grayscale") and will add a new last dimension of size
+three. The values will be the original single value repeated three
+times. To demonstrate::
+
+    >>> from imgblender.common import will_colorize
+    >>> a = np.array([
+    ...     [1.0, 0.5, 0.0, ],
+    ...     [0.5, 0.0, 0.5, ],
+    ...     [0.0, 0.5, 1.0, ],
+    ... ])
+    >>> b = np.array([
+    ...     [[0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+    ...     [[0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+    ...     [[0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+    ... ])
+    >>>
+    >>> @will_colorize
+    ... def spam(a, b):
+    ...     return a
+    ...
+    >>> a_ = spam(a, b)
+    >>> a_
+    array([[[1. , 1. , 1. ],
+            [0.5, 0.5, 0.5],
+            [0. , 0. , 0. ]],
+    <BLANKLINE>
+           [[0.5, 0.5, 0.5],
+            [0. , 0. , 0. ],
+            [0.5, 0.5, 0.5]],
+    <BLANKLINE>
+           [[0. , 0. , 0. ],
+            [0.5, 0.5, 0.5],
+            [1. , 1. , 1. ]]])
+    >>> a.shape
+    (3, 3)
+    >>> a_.shape
+    (3, 3, 3)
+
+The value of a returned by ```spam()``` in the demonstration has an
+extra dimension of size three added, and the values are three copies
+of the values in the original a.
+
+This can be turned off by passing ```False``` ro the ```colorize```
+parameter of the blend.
 """
 import numpy as np
 
@@ -64,6 +135,8 @@ def replace(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -93,6 +166,8 @@ def darker(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -123,6 +198,8 @@ def multiply(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -151,6 +228,8 @@ def color_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -183,6 +262,8 @@ def linear_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -212,6 +293,8 @@ def lighter(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -243,6 +326,8 @@ def screen(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -273,6 +358,8 @@ def color_dodge(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -302,6 +389,8 @@ def linear_dodge(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -332,6 +421,8 @@ def difference(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -360,6 +451,8 @@ def exclusion(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -390,6 +483,8 @@ def hard_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -421,6 +516,8 @@ def hard_mix(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -451,6 +548,8 @@ def linear_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -479,6 +578,8 @@ def overlay(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -510,6 +611,8 @@ def pin_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -552,6 +655,8 @@ def soft_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
@@ -584,6 +689,8 @@ def vivid_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
         photo editing tool.
+    :param colorize: (Optional). Whether to ensure the two images have
+        the same number of color channels.
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.

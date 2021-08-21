@@ -420,6 +420,44 @@ class WillColorizeTestCase(ArrayTestCase):
         # Determine test result.
         self.assertArrayEqual(exp, act)
 
+    def test_no_effect_when_off(self):
+        """When False is passed to the colorize parameter, the
+        decorator should not change the image data.
+        """
+        # Expected value.
+        exp = np.array([
+            [
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+                [1.0, 1.0, 1.0, 1.0, 1.0, ],
+            ],
+        ], dtype=np.float32)
+
+        # Test data and set up.
+        a = np.array([
+            [
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
+            ],
+        ], dtype=np.float32)
+        b = exp.copy()
+        colorize = False
+
+        @c.will_colorize
+        def spam(a, b):
+            return b
+
+        # Run test.
+        act = spam(a, b, colorize=colorize)
+
+        # Determine test result.
+        self.assertArrayEqual(exp, act)
+
 
 class WillMatchSizeTestCase(ArrayTestCase):
     def test_clips(self):
