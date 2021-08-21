@@ -72,6 +72,27 @@ def will_clip(fn: Callable) -> Callable:
     return wrapper
 
 
+def will_colorize(fn: Callable) -> Callable:
+    """Ensure the images have the same number of color
+    channels.
+    """
+    @wraps(fn)
+    def wrapper(a: np.ndarray, b: np.ndarray, *args, **kwargs) -> np.ndarray:
+        # If the image have different numbers of color channels,
+        # add color channels to the one with the fewest.
+        a_dims = len(a.shape)
+        b_dims = len(b.shape)
+        if a_dims + 1 == b_dims and b.shape[-1] == 3:
+            a = _grayscale_to_rgb(a)
+        elif b_dims + 1 == a_dims and a.shape[-1] == 3:
+            b = _grayscale_to_rgb(b)
+
+        # Blend and return.
+        ab = fn(a, b, *args, **kwargs)
+        return ab
+    return wrapper
+
+
 def will_match_size(fn: Callable) -> Callable:
     """If the given images are different sizes, increase the size of
     the smaller image to match the larger image. Since this affects
@@ -113,6 +134,15 @@ def print_array(a: np.ndarray, depth: int = 0, color: bool = True) -> None:
 
 
 # Private utility functions.
+def _grayscale_to_rgb(a: np.ndarray) -> np.ndarray:
+    """Convert single channel image data to three channel."""
+    new_shape = (*a.shape, 3)
+    new_a = np.zeros(new_shape, dtype=a.dtype)
+    for channel in range(3):
+        new_a[..., channel] = a
+    return new_a
+
+
 def _resize_array(a: np.ndarray,
                   size: tuple[int],
                   fill: float = 0.0) -> np.ndarray:
