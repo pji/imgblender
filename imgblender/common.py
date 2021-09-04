@@ -106,7 +106,7 @@ def will_match_size(fn: Callable) -> Callable:
     @wraps(fn)
     def wrapper(a: np.ndarray, b: np.ndarray, *args, **kwargs) -> np.ndarray:
         # Calculate the new size of the images.
-        size = [max(dim) for dim in zip(a.shape, b.shape)]
+        size = tuple(max(dim) for dim in zip(a.shape, b.shape))
 
         # Resize the dimensions of the arrays that are smaller than
         # the new array size.
@@ -148,7 +148,7 @@ def _grayscale_to_rgb(a: np.ndarray) -> np.ndarray:
 
 
 def _resize_array(a: np.ndarray,
-                  size: tuple[int],
+                  size: tuple[int, ...],
                   fill: float = 0.0) -> np.ndarray:
     """Resize the array to the given size."""
     # Create array at the new size.
