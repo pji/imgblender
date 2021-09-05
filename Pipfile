@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+opencv-python = "*"
+imgwriter = {path = "./../imgwriter"}
+
+[dev-packages]
+pycodestyle = "*"
+mypy = "*"
+rstcheck = "*"
+
+[requires]
+python_version = "3.9"
