@@ -29,9 +29,9 @@ It should be. It's pure Python, and the main library it uses is
 numpy.
 
 
-************************************
-Can I install this package from pip?
-************************************
+***************************************
+Can I install this package from pipenv?
+***************************************
 Yes, but imgblender is not currently available through PyPI. You
 will need to clone the repository to the system you want to install
 imgblender on and run the following::
@@ -40,6 +40,21 @@ imgblender on and run the following::
 
 Replace `path/to/local/copy` with the path for your local clone of
 this repository.
+
+
+*********************************************************
+How do I install opencv-python or numpy on macOS Big Sur?
+*********************************************************
+If you are getting an error when trying to install either `opencv-python`
+or `numpy` when running on macOS Big Sur, try running the following
+before the install::
+
+    export SYSTEM_VERSION_COMPAT=1
+
+Big Sur changed the major version number for macOS from ten to eleven,
+which seems to cause a problem for some versions of `pip` and `numpy`.
+Setting the `SYSTEM_VERSION_COMPAT` environment variable to one tells
+macOS to report its version as `10.16` rather than `11.0`.
 
 
 ***********************

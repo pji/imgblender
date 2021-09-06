@@ -52,9 +52,13 @@ def check_doctests(modules):
 def check_requirements():
     """Check requirements."""
     print('Checking requirements...')
-    current = os.popen('.venv/bin/python -m pip freeze').readlines()
+    os.putenv('PIPENV_VERBOSITY', '-1')
+    cmd = '.venv/bin/python -m pipenv lock -r'
+    current = os.popen(cmd).readlines()
+    current = wrap_lines(current, 35, '', '  ')
     with open('requirements.txt') as fh:
         old = fh.readlines()
+    old = wrap_lines(old, 35, '', '  ')
 
     # If the packages installed don't match the requirements, it's
     # likely the requirements need to be updated. Display the two
@@ -63,14 +67,15 @@ def check_requirements():
     if current != old:
         print('requirements.txt out of date.')
         print()
-        tmp = '{:<30} {:<30}'
+        tmp = '{:<35} {:<35}'
         print(tmp.format('old', 'current'))
         for c, o in zip_longest(current, old, fillvalue=''):
-            print(tmp.format(c[:-1], o[:-1]))
+            print(tmp.format(c, o))
         print()
         update = input('Update? [y/N]: ')
         if update.casefold() == 'y':
-            os.system('.venv/bin/python -m pip freeze > requirements.txt')
+            os.system(f'{cmd} > requirements.txt')
+    os.unsetenv('PIPENV_VERBOSITY')
     print('Requirements checked...')
 
 
@@ -219,6 +224,22 @@ def remove_whitespace(filename):
             fh.writelines(newlines)
 
 
+def wrap_lines(lines, width, initial_indent, subsequent_indent):
+    """Perform word wrapping on a sequence of lines of text."""
+    out = []
+    kwargs = {
+        'width': width,
+        'initial_indent': initial_indent,
+        'subsequent_indent': subsequent_indent,
+    }
+    for line in lines:
+        if line.endswith('\n'):
+            line = line[:-1]
+        wrapped = wrap(line, **kwargs)
+        out.extend(wrapped)
+    return out
+
+
 def main():
     with open('./.gitignore') as fh:
         lines = fh.readlines()
@@ -234,7 +255,7 @@ def main():
 
     # Only continue with precommit checks if the unit tests passed.
     if not result.errors and not result.failures:
-        # check_requirements()
+        check_requirements()
         check_doctests(doctest_modules)
         check_style(python_files)
         check_rst(rst_files)
