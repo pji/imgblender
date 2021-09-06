@@ -68,7 +68,7 @@ def check_requirements():
         print('requirements.txt out of date.')
         print()
         tmp = '{:<35} {:<35}'
-        print(tmp.format('old', 'current'))
+        print(tmp.format('current', 'old'))
         for c, o in zip_longest(current, old, fillvalue=''):
             print(tmp.format(c, o))
         print()
