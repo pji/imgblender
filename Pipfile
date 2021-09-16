@@ -6,12 +6,12 @@ name = "pypi"
 [packages]
 numpy = "*"
 opencv-python = "*"
-imgwriter = {path = "./../imgwriter"}
 
 [dev-packages]
 pycodestyle = "*"
 mypy = "*"
 rstcheck = "*"
+imgwriter = {path = "./../imgwriter"}
 
 [requires]
 python_version = "3.9"
