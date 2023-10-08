@@ -113,8 +113,35 @@ The value returned by ```spam()``` in the demonstration has an
 extra dimension of size three added, and the values are three copies
 of the values in the original ```a````.
 
-This can be turned off by passing ```False``` ro the ```colorize```
+This can be turned off by passing ```False``` to the ```colorize```
 parameter of the blend.
+
+
+API
+===
+The examples in the following blends will show the result when a simple
+horizontal gradient is blended with a simple vertical gradient.
+
+    .. figure:: images/a.jpg
+       :alt: The simple horizontal gradient `a`.
+       
+       The simple horizontal gradient `a`.
+    
+    .. figure:: images/b.jpg
+       :alt: The simple horizontal gradient `b`.
+       
+       The simple horizontal gradient `b`.
+
+
+Replacement Blends
+------------------
+.. autofunction:: imgblender.replace
+
+
+Darker/Burn Blends
+------------------
+.. autofunction:: imgblender.darker
+
 """
 import numpy as np
 from numpy.typing import NDArray
@@ -131,6 +158,11 @@ def replace(a: ImgAry, b: ImgAry) -> ImgAry:
     """Simple replacement filter. Can double as an opacity filter
     if passed can_fade amount, but otherwise this will just replace the
     values in a with the values in b.
+
+    .. figure:: images/replace.jpg
+       :alt: The result of :func:`replace`.
+       
+       The result of :func:`replace`.
 
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
@@ -163,6 +195,11 @@ def replace(a: ImgAry, b: ImgAry) -> ImgAry:
 def darker(a: ImgAry, b: ImgAry) -> ImgAry:
     """Replaces values in the existing image with values from the
     blending image when the value in the blending image is darker.
+
+    .. figure:: images/darker.jpg
+       :alt: The result of :func:`darker`.
+       
+       The result of :func:`darker`.
 
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
