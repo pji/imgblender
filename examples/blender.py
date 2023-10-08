@@ -3,6 +3,11 @@ blender
 ~~~~~~~
 
 A python script for blending image data.
+
+for more information, view the help::
+
+    python3 examples/blender.py -h
+
 """
 from argparse import ArgumentParser
 from inspect import getmembers, isfunction

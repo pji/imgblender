@@ -155,9 +155,9 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../index.html">imgblender Documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">imgblender Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">blends</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples.html">examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../requirements.html">imgblender Requirements</a></li>
 </ul>
 
@@ -336,6 +336,34 @@
 <span class="sd">Darker/Burn Blends</span>
 <span class="sd">------------------</span>
 <span class="sd">.. autofunction:: imgblender.darker</span>
+<span class="sd">.. autofunction:: imgblender.multiply</span>
+<span class="sd">.. autofunction:: imgblender.color_burn</span>
+<span class="sd">.. autofunction:: imgblender.linear_burn</span>
+
+
+<span class="sd">Lighter/Dodge Blends</span>
+<span class="sd">--------------------</span>
+<span class="sd">.. autofunction:: imgblender.lighter</span>
+<span class="sd">.. autofunction:: imgblender.screen</span>
+<span class="sd">.. autofunction:: imgblender.color_dodge</span>
+<span class="sd">.. autofunction:: imgblender.linear_dodge</span>
+
+
+<span class="sd">Inversion Blends</span>
+<span class="sd">----------------</span>
+<span class="sd">.. autofunction:: imgblender.difference</span>
+<span class="sd">.. autofunction:: imgblender.exclusion</span>
+
+
+<span class="sd">Contrast Blends</span>
+<span class="sd">---------------</span>
+<span class="sd">.. autofunction:: imgblender.hard_light</span>
+<span class="sd">.. autofunction:: imgblender.hard_mix</span>
+<span class="sd">.. autofunction:: imgblender.linear_light</span>
+<span class="sd">.. autofunction:: imgblender.overlay</span>
+<span class="sd">.. autofunction:: imgblender.pin_light</span>
+<span class="sd">.. autofunction:: imgblender.soft_light</span>
+<span class="sd">.. autofunction:: imgblender.vivid_light</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -426,6 +454,8 @@
 
 
 
+<div class="viewcode-block" id="multiply">
+<a class="viewcode-back" href="../../api.html#imgblender.multiply">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -434,6 +464,11 @@
 <span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Multiplies the values of the two images, leading to darker</span>
 <span class="sd">    values. This is useful for shadows and similar situations.</span>
+
+<span class="sd">    .. figure:: images/multiply.jpg</span>
+<span class="sd">       :alt: The result of :func:`multiply`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`multiply`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -454,9 +489,12 @@
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span></div>
 
 
+
+<div class="viewcode-block" id="color_burn">
+<a class="viewcode-back" href="../../api.html#imgblender.color_burn">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -465,6 +503,11 @@
 <span class="k">def</span> <span class="nf">color_burn</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to multiply, but is darker and produces higher</span>
 <span class="sd">    contrast.</span>
+
+<span class="sd">    .. figure:: images/color_burn.jpg</span>
+<span class="sd">       :alt: The result of :func:`color_burn`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`color_burn`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -489,9 +532,12 @@
     <span class="n">ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">])</span> <span class="o">/</span> <span class="n">b</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
     <span class="n">ab</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">return</span> <span class="n">ab</span>
+    <span class="k">return</span> <span class="n">ab</span></div>
 
 
+
+<div class="viewcode-block" id="linear_burn">
+<a class="viewcode-back" href="../../api.html#imgblender.linear_burn">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -500,6 +546,11 @@
 <span class="k">def</span> <span class="nf">linear_burn</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to multiply, but is darker, produces less saturated</span>
 <span class="sd">    colors than color burn, and produces more contrast in the shadows.</span>
+
+<span class="sd">    .. figure:: images/linear_burn.jpg</span>
+<span class="sd">       :alt: The result of :func:`linear_burn`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`linear_burn`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -520,10 +571,13 @@
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">-</span> <span class="mi">1</span></div>
+
 
 
 <span class="c1"># Lighter/dodge blends.</span>
+<div class="viewcode-block" id="lighter">
+<a class="viewcode-back" href="../../api.html#imgblender.lighter">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -532,6 +586,11 @@
 <span class="k">def</span> <span class="nf">lighter</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Replaces values in the existing image with values from the</span>
 <span class="sd">    blending image when the value in the blending image is lighter.</span>
+
+<span class="sd">    .. figure:: images/lighter.jpg</span>
+<span class="sd">       :alt: The result of :func:`lighter`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`lighter`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -554,9 +613,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">b</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">b</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">ab</span>
+    <span class="k">return</span> <span class="n">ab</span></div>
 
 
+
+<div class="viewcode-block" id="screen">
+<a class="viewcode-back" href="../../api.html#imgblender.screen">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -566,6 +628,11 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs an inverse multiplication on the colors from the two</span>
 <span class="sd">    images then inverse the colors again. This leads to overall</span>
 <span class="sd">    brighter colors and is the opposite of multiply.</span>
+
+<span class="sd">    .. figure:: images/screen.jpg</span>
+<span class="sd">       :alt: The result of :func:`screen`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`screen`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -589,9 +656,12 @@
     <span class="n">rev_a</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span>
     <span class="n">rev_b</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">b</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">rev_a</span> <span class="o">*</span> <span class="n">rev_b</span>
-    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">ab</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">ab</span></div>
 
 
+
+<div class="viewcode-block" id="color_dodge">
+<a class="viewcode-back" href="../../api.html#imgblender.color_dodge">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -599,6 +669,11 @@
 <span class="nd">@will_colorize</span>
 <span class="k">def</span> <span class="nf">color_dodge</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to screen, but brighter and decreases the contrast.</span>
+
+<span class="sd">    .. figure:: images/color_dodge.jpg</span>
+<span class="sd">       :alt: The result of :func:`color_dodge`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`color_dodge`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -621,9 +696,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">b</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">b</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">[</span><span class="n">b</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">ab</span>
+    <span class="k">return</span> <span class="n">ab</span></div>
 
 
+
+<div class="viewcode-block" id="linear_dodge">
+<a class="viewcode-back" href="../../api.html#imgblender.linear_dodge">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -631,6 +709,11 @@
 <span class="nd">@will_colorize</span>
 <span class="k">def</span> <span class="nf">linear_dodge</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to screen but produces stronger results.</span>
+
+<span class="sd">    .. figure:: images/linear_dodge.jpg</span>
+<span class="sd">       :alt: The result of :func:`linear_dodge`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`linear_dodge`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -651,10 +734,13 @@
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span></div>
+
 
 
 <span class="c1"># Inversion blends.</span>
+<div class="viewcode-block" id="difference">
+<a class="viewcode-back" href="../../api.html#imgblender.difference">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -665,6 +751,11 @@
 <span class="sd">    This is often useful in creating complex patterns or when</span>
 <span class="sd">    aligning two images.</span>
 
+<span class="sd">    .. figure:: images/difference.jpg</span>
+<span class="sd">       :alt: The result of :func:`difference`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`difference`.</span>
+
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
 <span class="sd">    :param b: The values to blend. This is like the top layer in a</span>
@@ -684,9 +775,12 @@
 <span class="sd">        blended arrays.</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span></div>
 
 
+
+<div class="viewcode-block" id="exclusion">
+<a class="viewcode-back" href="../../api.html#imgblender.exclusion">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -695,6 +789,11 @@
 <span class="k">def</span> <span class="nf">exclusion</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to difference, with the result tending to gray</span>
 <span class="sd">    rather than black.</span>
+
+<span class="sd">    .. figure:: images/exclusion.jpg</span>
+<span class="sd">       :alt: The result of :func:`exclusion`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`exclusion`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -716,10 +815,13 @@
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
-    <span class="k">return</span> <span class="n">ab</span>
+    <span class="k">return</span> <span class="n">ab</span></div>
+
 
 
 <span class="c1"># Contrast blends.</span>
+<div class="viewcode-block" id="hard_light">
+<a class="viewcode-back" href="../../api.html#imgblender.hard_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -728,6 +830,11 @@
 <span class="k">def</span> <span class="nf">hard_light</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to the blending image being a harsh light shining</span>
 <span class="sd">    on the existing image.</span>
+
+<span class="sd">    .. figure:: images/hard_light.jpg</span>
+<span class="sd">       :alt: The result of :func:`hard_light`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`hard_light`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -751,9 +858,12 @@
     <span class="n">ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">.5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">.5</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">.5</span><span class="p">]</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mf">.5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mf">.5</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mf">.5</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">ab</span>
+    <span class="k">return</span> <span class="n">ab</span></div>
 
 
+
+<div class="viewcode-block" id="hard_mix">
+<a class="viewcode-back" href="../../api.html#imgblender.hard_mix">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -762,6 +872,11 @@
 <span class="k">def</span> <span class="nf">hard_mix</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Increases the saturation and contrast. It&#39;s best used with</span>
 <span class="sd">    masks and can_fade.</span>
+
+<span class="sd">    .. figure:: images/hard_mix.jpg</span>
+<span class="sd">       :alt: The result of :func:`hard_mix`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`hard_mix`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -785,9 +900,12 @@
     <span class="n">ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">ab</span>
+    <span class="k">return</span> <span class="n">ab</span></div>
 
 
+
+<div class="viewcode-block" id="linear_light">
+<a class="viewcode-back" href="../../api.html#imgblender.linear_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -795,6 +913,11 @@
 <span class="nd">@will_colorize</span>
 <span class="k">def</span> <span class="nf">linear_light</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Combines linear dodge and linear burn.</span>
+
+<span class="sd">    .. figure:: images/linear_light.jpg</span>
+<span class="sd">       :alt: The result of :func:`linear_light`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`linear_light`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -816,9 +939,12 @@
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">a</span> <span class="o">-</span> <span class="mf">1.0</span>
-    <span class="k">return</span> <span class="n">ab</span>
+    <span class="k">return</span> <span class="n">ab</span></div>
 
 
+
+<div class="viewcode-block" id="overlay">
+<a class="viewcode-back" href="../../api.html#imgblender.overlay">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -826,6 +952,11 @@
 <span class="nd">@will_colorize</span>
 <span class="k">def</span> <span class="nf">overlay</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Combines screen and multiply blends.</span>
+
+<span class="sd">    .. figure:: images/overlay.jpg</span>
+<span class="sd">       :alt: The result of :func:`overlay`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`overlay`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -850,9 +981,12 @@
     <span class="n">ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">ab</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">])</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">[</span><span class="n">mask</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">ab</span>
+    <span class="k">return</span> <span class="n">ab</span></div>
 
 
+
+<div class="viewcode-block" id="pin_light">
+<a class="viewcode-back" href="../../api.html#imgblender.pin_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -860,6 +994,11 @@
 <span class="nd">@will_colorize</span>
 <span class="k">def</span> <span class="nf">pin_light</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Combines lighten and darken blends.</span>
+
+<span class="sd">    .. figure:: images/pin_light.jpg</span>
+<span class="sd">       :alt: The result of :func:`pin_light`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`pin_light`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -894,9 +1033,12 @@
     <span class="n">ab</span><span class="p">[</span><span class="n">m1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">m1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">m2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">m2</span><span class="p">]</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">m3</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">m3</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">ab</span>
+    <span class="k">return</span> <span class="n">ab</span></div>
 
 
+
+<div class="viewcode-block" id="soft_light">
+<a class="viewcode-back" href="../../api.html#imgblender.soft_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -905,6 +1047,11 @@
 <span class="k">def</span> <span class="nf">soft_light</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to overlay, but biases towards the blending value</span>
 <span class="sd">    rather than the existing value.</span>
+
+<span class="sd">    .. figure:: images/soft_light.jpg</span>
+<span class="sd">       :alt: The result of :func:`soft_light`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`soft_light`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -930,9 +1077,12 @@
     <span class="n">m</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mf">.5</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
     <span class="n">ab</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">])</span> <span class="o">-</span> <span class="n">b</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">])</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">ab</span>
+    <span class="k">return</span> <span class="n">ab</span></div>
 
 
+
+<div class="viewcode-block" id="vivid_light">
+<a class="viewcode-back" href="../../api.html#imgblender.vivid_light">[docs]</a>
 <span class="nd">@will_clip</span>
 <span class="nd">@can_mask</span>
 <span class="nd">@can_fade</span>
@@ -940,6 +1090,11 @@
 <span class="nd">@will_colorize</span>
 <span class="k">def</span> <span class="nf">vivid_light</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ImgAry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImgAry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Good for color grading when faded.</span>
+
+<span class="sd">    .. figure:: images/vivid_light.jpg</span>
+<span class="sd">       :alt: The result of :func:`vivid_light`.</span>
+<span class="sd">       </span>
+<span class="sd">       The result of :func:`vivid_light`.</span>
 
 <span class="sd">    :param a: The existing values. This is like the bottom layer in</span>
 <span class="sd">        a photo editing tool.</span>
@@ -973,7 +1128,8 @@
     <span class="n">ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">m1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">[</span><span class="n">m1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">m1</span><span class="p">])</span>
     <span class="n">ab</span><span class="p">[</span><span class="n">m2</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">m2</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="n">m2</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">ab</span>
+    <span class="k">return</span> <span class="n">ab</span></div>
+
 </pre></div>
         </article>
       </div>

@@ -3,8 +3,14 @@ build_doc_images
 ~~~~~~~~~~~~~~~~
 
 Build the images for the :mod:`imgblender` documentation.
+
+For more information, view the help::
+
+    python3 examples/build_doc_images.py -h
+
 """
 from argparse import ArgumentParser
+from inspect import getmembers, isfunction
 from pathlib import Path
 from typing import Callable
 
@@ -16,6 +22,15 @@ import imgblender as ib
 
 # Constants.
 X, Y, Z = -1, -2, -3
+
+
+# Private utility functions.
+def _get_blends() -> dict[str, Callable]:
+    """Get the list of blending functions."""
+    members = getmembers(ib, isfunction)
+    blends = [blend for blend in members if not blend[0].startswith('can_')]
+    blends = [blend for blend in blends if not blend[0].startswith('will_')]
+    return dict(blends)
 
 
 # Make the example images.
@@ -42,12 +57,10 @@ def make_images(path: Path, size: ib.Size):
     iw.save(path / 'b.jpg', b)
     print('Base images made.')
 
-    blends = [
-        ib.replace,
-        ib.darker,
-    ]
+    blends = _get_blends()
 
-    for blend in blends:
+    for key in blends:
+        blend = blends[key]
         fname = f'{blend.__name__}.jpg'
         print(f'Making {fname}...')
         ab = blend(a, b)

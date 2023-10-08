@@ -141,6 +141,34 @@ Replacement Blends
 Darker/Burn Blends
 ------------------
 .. autofunction:: imgblender.darker
+.. autofunction:: imgblender.multiply
+.. autofunction:: imgblender.color_burn
+.. autofunction:: imgblender.linear_burn
+
+
+Lighter/Dodge Blends
+--------------------
+.. autofunction:: imgblender.lighter
+.. autofunction:: imgblender.screen
+.. autofunction:: imgblender.color_dodge
+.. autofunction:: imgblender.linear_dodge
+
+
+Inversion Blends
+----------------
+.. autofunction:: imgblender.difference
+.. autofunction:: imgblender.exclusion
+
+
+Contrast Blends
+---------------
+.. autofunction:: imgblender.hard_light
+.. autofunction:: imgblender.hard_mix
+.. autofunction:: imgblender.linear_light
+.. autofunction:: imgblender.overlay
+.. autofunction:: imgblender.pin_light
+.. autofunction:: imgblender.soft_light
+.. autofunction:: imgblender.vivid_light
 
 """
 import numpy as np
@@ -234,6 +262,11 @@ def multiply(a: ImgAry, b: ImgAry) -> ImgAry:
     """Multiplies the values of the two images, leading to darker
     values. This is useful for shadows and similar situations.
 
+    .. figure:: images/multiply.jpg
+       :alt: The result of :func:`multiply`.
+       
+       The result of :func:`multiply`.
+
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
@@ -264,6 +297,11 @@ def multiply(a: ImgAry, b: ImgAry) -> ImgAry:
 def color_burn(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to multiply, but is darker and produces higher
     contrast.
+
+    .. figure:: images/color_burn.jpg
+       :alt: The result of :func:`color_burn`.
+       
+       The result of :func:`color_burn`.
 
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
@@ -300,6 +338,11 @@ def linear_burn(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to multiply, but is darker, produces less saturated
     colors than color burn, and produces more contrast in the shadows.
 
+    .. figure:: images/linear_burn.jpg
+       :alt: The result of :func:`linear_burn`.
+       
+       The result of :func:`linear_burn`.
+
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
@@ -331,6 +374,11 @@ def linear_burn(a: ImgAry, b: ImgAry) -> ImgAry:
 def lighter(a: ImgAry, b: ImgAry) -> ImgAry:
     """Replaces values in the existing image with values from the
     blending image when the value in the blending image is lighter.
+
+    .. figure:: images/lighter.jpg
+       :alt: The result of :func:`lighter`.
+       
+       The result of :func:`lighter`.
 
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
@@ -366,6 +414,11 @@ def screen(a: ImgAry, b: ImgAry) -> ImgAry:
     images then inverse the colors again. This leads to overall
     brighter colors and is the opposite of multiply.
 
+    .. figure:: images/screen.jpg
+       :alt: The result of :func:`screen`.
+       
+       The result of :func:`screen`.
+
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
@@ -399,6 +452,11 @@ def screen(a: ImgAry, b: ImgAry) -> ImgAry:
 def color_dodge(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to screen, but brighter and decreases the contrast.
 
+    .. figure:: images/color_dodge.jpg
+       :alt: The result of :func:`color_dodge`.
+       
+       The result of :func:`color_dodge`.
+
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
@@ -430,6 +488,11 @@ def color_dodge(a: ImgAry, b: ImgAry) -> ImgAry:
 @will_colorize
 def linear_dodge(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to screen but produces stronger results.
+
+    .. figure:: images/linear_dodge.jpg
+       :alt: The result of :func:`linear_dodge`.
+       
+       The result of :func:`linear_dodge`.
 
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
@@ -464,6 +527,11 @@ def difference(a: ImgAry, b: ImgAry) -> ImgAry:
     This is often useful in creating complex patterns or when
     aligning two images.
 
+    .. figure:: images/difference.jpg
+       :alt: The result of :func:`difference`.
+       
+       The result of :func:`difference`.
+
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
@@ -494,6 +562,11 @@ def difference(a: ImgAry, b: ImgAry) -> ImgAry:
 def exclusion(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to difference, with the result tending to gray
     rather than black.
+
+    .. figure:: images/exclusion.jpg
+       :alt: The result of :func:`exclusion`.
+       
+       The result of :func:`exclusion`.
 
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
@@ -527,6 +600,11 @@ def exclusion(a: ImgAry, b: ImgAry) -> ImgAry:
 def hard_light(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to the blending image being a harsh light shining
     on the existing image.
+
+    .. figure:: images/hard_light.jpg
+       :alt: The result of :func:`hard_light`.
+       
+       The result of :func:`hard_light`.
 
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
@@ -562,6 +640,11 @@ def hard_mix(a: ImgAry, b: ImgAry) -> ImgAry:
     """Increases the saturation and contrast. It's best used with
     masks and can_fade.
 
+    .. figure:: images/hard_mix.jpg
+       :alt: The result of :func:`hard_mix`.
+       
+       The result of :func:`hard_mix`.
+
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
@@ -595,6 +678,11 @@ def hard_mix(a: ImgAry, b: ImgAry) -> ImgAry:
 def linear_light(a: ImgAry, b: ImgAry) -> ImgAry:
     """Combines linear dodge and linear burn.
 
+    .. figure:: images/linear_light.jpg
+       :alt: The result of :func:`linear_light`.
+       
+       The result of :func:`linear_light`.
+
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
@@ -625,6 +713,11 @@ def linear_light(a: ImgAry, b: ImgAry) -> ImgAry:
 @will_colorize
 def overlay(a: ImgAry, b: ImgAry) -> ImgAry:
     """Combines screen and multiply blends.
+
+    .. figure:: images/overlay.jpg
+       :alt: The result of :func:`overlay`.
+       
+       The result of :func:`overlay`.
 
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
@@ -659,6 +752,11 @@ def overlay(a: ImgAry, b: ImgAry) -> ImgAry:
 @will_colorize
 def pin_light(a: ImgAry, b: ImgAry) -> ImgAry:
     """Combines lighten and darken blends.
+
+    .. figure:: images/pin_light.jpg
+       :alt: The result of :func:`pin_light`.
+       
+       The result of :func:`pin_light`.
 
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
@@ -705,6 +803,11 @@ def soft_light(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to overlay, but biases towards the blending value
     rather than the existing value.
 
+    .. figure:: images/soft_light.jpg
+       :alt: The result of :func:`soft_light`.
+       
+       The result of :func:`soft_light`.
+
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.
     :param b: The values to blend. This is like the top layer in a
@@ -739,6 +842,11 @@ def soft_light(a: ImgAry, b: ImgAry) -> ImgAry:
 @will_colorize
 def vivid_light(a: ImgAry, b: ImgAry) -> ImgAry:
     """Good for color grading when faded.
+
+    .. figure:: images/vivid_light.jpg
+       :alt: The result of :func:`vivid_light`.
+       
+       The result of :func:`vivid_light`.
 
     :param a: The existing values. This is like the bottom layer in
         a photo editing tool.

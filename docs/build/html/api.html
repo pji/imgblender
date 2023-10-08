@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="examples" href="examples.html" /><link rel="prev" title="imgblender Documentation!" href="index.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Examples" href="examples.html" /><link rel="prev" title="imgblender Documentation" href="index.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>blends - imgblender 0.0.6 documentation</title>
@@ -156,9 +156,9 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="index.html">imgblender Documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">imgblender Documentation</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">blends</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">imgblender Requirements</a></li>
 </ul>
 
@@ -430,6 +430,667 @@ blended arrays.</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.multiply">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">multiply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#multiply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.multiply" title="Link to this definition">#</a></dt>
+<dd><p>Multiplies the values of the two images, leading to darker
+values. This is useful for shadows and similar situations.</p>
+<figure class="align-default" id="id5">
+<img alt="The result of :func:`multiply`." src="_images/multiply.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.multiply" title="imgblender.multiply"><code class="xref py py-func docutils literal notranslate"><span class="pre">multiply()</span></code></a>.</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.color_burn">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">color_burn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#color_burn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.color_burn" title="Link to this definition">#</a></dt>
+<dd><p>Similar to multiply, but is darker and produces higher
+contrast.</p>
+<figure class="align-default" id="id6">
+<img alt="The result of :func:`color_burn`." src="_images/color_burn.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.color_burn" title="imgblender.color_burn"><code class="xref py py-func docutils literal notranslate"><span class="pre">color_burn()</span></code></a>.</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.linear_burn">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">linear_burn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#linear_burn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.linear_burn" title="Link to this definition">#</a></dt>
+<dd><p>Similar to multiply, but is darker, produces less saturated
+colors than color burn, and produces more contrast in the shadows.</p>
+<figure class="align-default" id="id7">
+<img alt="The result of :func:`linear_burn`." src="_images/linear_burn.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.linear_burn" title="imgblender.linear_burn"><code class="xref py py-func docutils literal notranslate"><span class="pre">linear_burn()</span></code></a>.</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="lighter-dodge-blends">
+<h3>Lighter/Dodge Blends<a class="headerlink" href="#lighter-dodge-blends" title="Link to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.lighter">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">lighter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#lighter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.lighter" title="Link to this definition">#</a></dt>
+<dd><p>Replaces values in the existing image with values from the
+blending image when the value in the blending image is lighter.</p>
+<figure class="align-default" id="id8">
+<img alt="The result of :func:`lighter`." src="_images/lighter.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.lighter" title="imgblender.lighter"><code class="xref py py-func docutils literal notranslate"><span class="pre">lighter()</span></code></a>.</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.screen">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#screen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.screen" title="Link to this definition">#</a></dt>
+<dd><p>Performs an inverse multiplication on the colors from the two
+images then inverse the colors again. This leads to overall
+brighter colors and is the opposite of multiply.</p>
+<figure class="align-default" id="id9">
+<img alt="The result of :func:`screen`." src="_images/screen.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.screen" title="imgblender.screen"><code class="xref py py-func docutils literal notranslate"><span class="pre">screen()</span></code></a>.</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.color_dodge">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">color_dodge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#color_dodge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.color_dodge" title="Link to this definition">#</a></dt>
+<dd><p>Similar to screen, but brighter and decreases the contrast.</p>
+<figure class="align-default" id="id10">
+<img alt="The result of :func:`color_dodge`." src="_images/color_dodge.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.color_dodge" title="imgblender.color_dodge"><code class="xref py py-func docutils literal notranslate"><span class="pre">color_dodge()</span></code></a>.</span><a class="headerlink" href="#id10" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.linear_dodge">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">linear_dodge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#linear_dodge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.linear_dodge" title="Link to this definition">#</a></dt>
+<dd><p>Similar to screen but produces stronger results.</p>
+<figure class="align-default" id="id11">
+<img alt="The result of :func:`linear_dodge`." src="_images/linear_dodge.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.linear_dodge" title="imgblender.linear_dodge"><code class="xref py py-func docutils literal notranslate"><span class="pre">linear_dodge()</span></code></a>.</span><a class="headerlink" href="#id11" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="inversion-blends">
+<h3>Inversion Blends<a class="headerlink" href="#inversion-blends" title="Link to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.difference">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">difference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#difference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.difference" title="Link to this definition">#</a></dt>
+<dd><p>Takes the absolute value of the difference of the two values.
+This is often useful in creating complex patterns or when
+aligning two images.</p>
+<figure class="align-default" id="id12">
+<img alt="The result of :func:`difference`." src="_images/difference.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.difference" title="imgblender.difference"><code class="xref py py-func docutils literal notranslate"><span class="pre">difference()</span></code></a>.</span><a class="headerlink" href="#id12" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.exclusion">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">exclusion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#exclusion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.exclusion" title="Link to this definition">#</a></dt>
+<dd><p>Similar to difference, with the result tending to gray
+rather than black.</p>
+<figure class="align-default" id="id13">
+<img alt="The result of :func:`exclusion`." src="_images/exclusion.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.exclusion" title="imgblender.exclusion"><code class="xref py py-func docutils literal notranslate"><span class="pre">exclusion()</span></code></a>.</span><a class="headerlink" href="#id13" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="contrast-blends">
+<h3>Contrast Blends<a class="headerlink" href="#contrast-blends" title="Link to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.hard_light">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">hard_light</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#hard_light"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.hard_light" title="Link to this definition">#</a></dt>
+<dd><p>Similar to the blending image being a harsh light shining
+on the existing image.</p>
+<figure class="align-default" id="id14">
+<img alt="The result of :func:`hard_light`." src="_images/hard_light.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.hard_light" title="imgblender.hard_light"><code class="xref py py-func docutils literal notranslate"><span class="pre">hard_light()</span></code></a>.</span><a class="headerlink" href="#id14" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.hard_mix">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">hard_mix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#hard_mix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.hard_mix" title="Link to this definition">#</a></dt>
+<dd><p>Increases the saturation and contrast. It’s best used with
+masks and can_fade.</p>
+<figure class="align-default" id="id15">
+<img alt="The result of :func:`hard_mix`." src="_images/hard_mix.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.hard_mix" title="imgblender.hard_mix"><code class="xref py py-func docutils literal notranslate"><span class="pre">hard_mix()</span></code></a>.</span><a class="headerlink" href="#id15" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.linear_light">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">linear_light</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#linear_light"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.linear_light" title="Link to this definition">#</a></dt>
+<dd><p>Combines linear dodge and linear burn.</p>
+<figure class="align-default" id="id16">
+<img alt="The result of :func:`linear_light`." src="_images/linear_light.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.linear_light" title="imgblender.linear_light"><code class="xref py py-func docutils literal notranslate"><span class="pre">linear_light()</span></code></a>.</span><a class="headerlink" href="#id16" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.overlay">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">overlay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#overlay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.overlay" title="Link to this definition">#</a></dt>
+<dd><p>Combines screen and multiply blends.</p>
+<figure class="align-default" id="id17">
+<img alt="The result of :func:`overlay`." src="_images/overlay.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.overlay" title="imgblender.overlay"><code class="xref py py-func docutils literal notranslate"><span class="pre">overlay()</span></code></a>.</span><a class="headerlink" href="#id17" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.pin_light">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">pin_light</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#pin_light"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.pin_light" title="Link to this definition">#</a></dt>
+<dd><p>Combines lighten and darken blends.</p>
+<figure class="align-default" id="id18">
+<img alt="The result of :func:`pin_light`." src="_images/pin_light.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.pin_light" title="imgblender.pin_light"><code class="xref py py-func docutils literal notranslate"><span class="pre">pin_light()</span></code></a>.</span><a class="headerlink" href="#id18" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.soft_light">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">soft_light</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#soft_light"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.soft_light" title="Link to this definition">#</a></dt>
+<dd><p>Similar to overlay, but biases towards the blending value
+rather than the existing value.</p>
+<figure class="align-default" id="id19">
+<img alt="The result of :func:`soft_light`." src="_images/soft_light.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.soft_light" title="imgblender.soft_light"><code class="xref py py-func docutils literal notranslate"><span class="pre">soft_light()</span></code></a>.</span><a class="headerlink" href="#id19" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imgblender.vivid_light">
+<span class="sig-prename descclassname"><span class="pre">imgblender.</span></span><span class="sig-name descname"><span class="pre">vivid_light</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/imgblender/blends.html#vivid_light"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgblender.vivid_light" title="Link to this definition">#</a></dt>
+<dd><p>Good for color grading when faded.</p>
+<figure class="align-default" id="id20">
+<img alt="The result of :func:`vivid_light`." src="_images/vivid_light.jpg" />
+<figcaption>
+<p><span class="caption-text">The result of <a class="reference internal" href="#imgblender.vivid_light" title="imgblender.vivid_light"><code class="xref py py-func docutils literal notranslate"><span class="pre">vivid_light()</span></code></a>.</span><a class="headerlink" href="#id20" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The existing values. This is like the bottom layer in
+a photo editing tool.</p></li>
+<li><p><strong>b</strong> – The values to blend. This is like the top layer in a
+photo editing tool.</p></li>
+<li><p><strong>colorize</strong> – (Optional). Whether to ensure the two images have
+the same number of color channels.</p></li>
+<li><p><strong>fade</strong> – (Optional.) The amount the blended values should
+affect the existing values. This is a float between zero
+and one, where zero is no effect and one is full effect.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_fade()</span></code> for more details.</p></li>
+<li><p><strong>mask</strong> – (Optional.) An image mask that is used to determine
+the effect the blend should have on the existing values.
+This is a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> of floats between zero and
+one, where zero is no effect and one is full effect. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">imgblender.common.can_mask()</span></code> for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> that contains the values of the
+blended arrays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 </section>
@@ -444,7 +1105,7 @@ blended arrays.</p>
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">examples</div>
+                <div class="title">Examples</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -499,6 +1160,31 @@ blended arrays.</p>
 </li>
 <li><a class="reference internal" href="#darker-burn-blends">Darker/Burn Blends</a><ul>
 <li><a class="reference internal" href="#imgblender.darker"><code class="docutils literal notranslate"><span class="pre">darker()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.multiply"><code class="docutils literal notranslate"><span class="pre">multiply()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.color_burn"><code class="docutils literal notranslate"><span class="pre">color_burn()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.linear_burn"><code class="docutils literal notranslate"><span class="pre">linear_burn()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lighter-dodge-blends">Lighter/Dodge Blends</a><ul>
+<li><a class="reference internal" href="#imgblender.lighter"><code class="docutils literal notranslate"><span class="pre">lighter()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.screen"><code class="docutils literal notranslate"><span class="pre">screen()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.color_dodge"><code class="docutils literal notranslate"><span class="pre">color_dodge()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.linear_dodge"><code class="docutils literal notranslate"><span class="pre">linear_dodge()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#inversion-blends">Inversion Blends</a><ul>
+<li><a class="reference internal" href="#imgblender.difference"><code class="docutils literal notranslate"><span class="pre">difference()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.exclusion"><code class="docutils literal notranslate"><span class="pre">exclusion()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#contrast-blends">Contrast Blends</a><ul>
+<li><a class="reference internal" href="#imgblender.hard_light"><code class="docutils literal notranslate"><span class="pre">hard_light()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.hard_mix"><code class="docutils literal notranslate"><span class="pre">hard_mix()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.linear_light"><code class="docutils literal notranslate"><span class="pre">linear_light()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.overlay"><code class="docutils literal notranslate"><span class="pre">overlay()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.pin_light"><code class="docutils literal notranslate"><span class="pre">pin_light()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.soft_light"><code class="docutils literal notranslate"><span class="pre">soft_light()</span></code></a></li>
+<li><a class="reference internal" href="#imgblender.vivid_light"><code class="docutils literal notranslate"><span class="pre">vivid_light()</span></code></a></li>
 </ul>
 </li>
 </ul>
