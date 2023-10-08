@@ -6,14 +6,9 @@ Unit tests for the examples for the imgblender module.
 """
 from pathlib import Path
 from subprocess import run
-from unittest.mock import patch
 
 import numpy as np
 import pytest as pt
-
-from imgblender import blends
-from examples import blender as ib
-from tests.common import ArrayTestCase
 
 
 # Common functions.
