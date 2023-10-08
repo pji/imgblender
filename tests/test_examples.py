@@ -4,72 +4,63 @@ test_examples
 
 Unit tests for the examples for the imgblender module.
 """
+from pathlib import Path
+from subprocess import run
 from unittest.mock import patch
 
 import numpy as np
+import pytest as pt
 
 from imgblender import blends
 from examples import blender as ib
 from tests.common import ArrayTestCase
 
 
+# Common functions.
+def cmp_files(path_a, path_b):
+    """Compare the contents of two files."""
+    with open(path_a, 'rb') as fh:
+        a = fh.read()
+    with open(path_b, 'rb') as fh:
+        b = fh.read()
+    return a == b
+
+
+# Fixtures.
+@pt.fixture
+def data_path():
+    "The path for test data."
+    return Path('tests/data')
+
+
 # Test cases.
-class BlenderTestCase(ArrayTestCase):
-    @patch('cv2.imwrite')
-    def test_blend(self, mock_imwrite):
+class TestBlender:
+    def test_blend(self, data_path, tmp_path):
         """Given the paths to two files, a blend function, and the
-        path of a destination file, run the blend on the contents
-        of the two files and save the result in the destination file.
+        path of a destination file, `blender.py` should run the blend
+        on the contents of the two files and save the result in the
+        destination file.
         """
-        # Expected values.
-        exp_a = np.array([
-            [0x00, 0x00, 0x00, ],
-            [0x00, 0x3f, 0x7f, ],
-            [0x00, 0x7f, 0xff, ],
-        ], dtype=np.uint8)
-        exp_path = 'spam.jpg'
+        fname = '__test_examples_testblender_test_blend.jpg'
+        run([
+            'python', 'examples/blender.py',
+            data_path / '__test_horizontal_grayscale_image.jpg',
+            data_path / '__test_vertical_grayscale_image.jpg',
+            'multiply',
+            tmp_path / fname,
+        ])
+        assert cmp_files(tmp_path / fname, data_path / fname)
 
-        # Test data and state.
-        file_a = 'tests/data/__test_horizontal_grayscale_image.jpg'
-        file_b = 'tests/data/__test_vertical_grayscale_image.jpg'
-        blend = blends.multiply
-
-        # Run test and extract results.
-        ib.blend_images(file_a, file_b, blend, exp_path)
-        args = mock_imwrite.call_args.args
-        act_a = args[1]
-        act_path = args[0]
-
-        # Determine test result.
-        self.assertArrayEqual(exp_a, act_a)
-        self.assertEqual(exp_path, act_path)
-
-    @patch('cv2.imwrite')
-    def test_blend_with_diff_size(self, mock_imwrite):
-        """If the images are different sizes, resize the smallest image
-        to match the largest before blending.
+    def test_blend_diff_size(self, data_path, tmp_path):
+        """If the images are different sizes, `blender.py` should resize
+        the smallest image to match the largest before blending.
         """
-        # Expected values.
-        exp_a = np.array([
-            [0x00, 0x00, 0x00, 0x00, 0x00],
-            [0x00, 0x00, 0x00, 0x00, 0x00],
-            [0x00, 0x00, 0x3f, 0x7f, 0x00],
-            [0x00, 0x00, 0x7f, 0xff, 0x00],
-            [0x00, 0x00, 0x00, 0x00, 0x00],
-        ], dtype=np.uint8)
-        exp_path = 'spam.jpg'
-
-        # Test data and state.
-        file_a = 'tests/data/__test_5x5_grayscale_image.jpg'
-        file_b = 'tests/data/__test_horizontal_grayscale_image.jpg'
-        blend = blends.multiply
-
-        # Run test and extract results.
-        ib.blend_images(file_a, file_b, blend, exp_path)
-        args = mock_imwrite.call_args.args
-        act_a = args[1]
-        act_path = args[0]
-
-        # Determine test result.
-        self.assertArrayEqual(exp_a, act_a)
-        self.assertEqual(exp_path, act_path)
+        fname = '__test_examples_testblender_test_blend_diff_size.jpg'
+        run([
+            'python', 'examples/blender.py',
+            data_path / '__test_5x5_grayscale_image.jpg',
+            data_path / '__test_horizontal_grayscale_image.jpg',
+            'multiply',
+            tmp_path / fname,
+        ])
+        assert cmp_files(tmp_path / fname, data_path / fname)

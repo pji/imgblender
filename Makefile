@@ -8,6 +8,8 @@ build:
 .PHONY: buildt
 buildt:
 	python -m pipenv install --dev -e .
+	rm tests/data/*
+	python tests/rebuild_data.py
 
 .PHONY: clean
 clean:

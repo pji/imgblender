@@ -22,10 +22,12 @@ def _get_blends() -> dict[str, Callable]:
 
 
 # Public functions.
-def blend_images(file_a: str,
-                 file_b: str,
-                 blend: Callable,
-                 file_ab: str) -> None:
+def blend_images(
+    file_a: str,
+    file_b: str,
+    blend: Callable,
+    file_ab: str
+) -> None:
     """Blend images."""
     # Load files.
     a = iw.read_image(file_a)
