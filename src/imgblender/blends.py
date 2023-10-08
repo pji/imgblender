@@ -122,10 +122,6 @@ from numpy.typing import NDArray
 from imgblender.common import *
 
 
-# Typing.
-ImgAry = NDArray[np.float_]
-
-
 # Simple replacement blends.
 @can_mask
 @can_fade
@@ -740,11 +736,3 @@ def vivid_light(a: ImgAry, b: ImgAry) -> ImgAry:
     ab[m1] = 1 - (1 - b[m1]) / (2 * a[m1])
     ab[m2] = b[m2] / (2 * (1 - a[m2]))
     return ab
-
-
-if __name__ == '__main__':
-    from imgblender.common import A, B, C, D, print_array
-    fn = vivid_light
-    ab = fn(A, B)
-#     ab = fn(C, D)
-    print_array(ab)

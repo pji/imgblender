@@ -5,15 +5,26 @@ common
 Common utility functions for the imgblender module.
 """
 from functools import wraps
-from typing import Callable, Union
+from typing import Callable, Sequence, Union
 
 import numpy as np
+from numpy.typing import NDArray
 
 
 # Exportable names.
 __all__ = [
-    'can_fade', 'can_mask', 'will_clip', 'will_colorize', 'will_match_size'
+    'Blend', 'ImgAry', 'can_fade', 'can_mask', 'will_clip', 'will_colorize',
+    'will_match_size'
 ]
+
+
+# Typing.
+ImgAry = NDArray[np.float_]
+Blend = Callable[[ImgAry, ImgAry], ImgAry]
+NumAry = NDArray[Union[
+    np.bool_, np.int_, np.float_, np.uint8, np.float32, np.float64
+]]
+Size = Sequence[int]
 
 
 # Global data.
@@ -21,13 +32,15 @@ X, Y, Z = 2, 1, 0
 
 
 # Decorators.
-def can_fade(fn: Callable) -> Callable:
+def can_fade(fn: Blend) -> Blend:
     """Adjust how much the blend affects the base array."""
     @wraps(fn)
-    def wrapper(a: np.ndarray,
-                b: np.ndarray,
-                fade: float = 1.0,
-                *args, **kwargs) -> np.ndarray:
+    def wrapper(
+        a: ImgAry,
+        b: ImgAry,
+        fade: float = 1.0,
+        *args, **kwargs
+    ) -> ImgAry:
         # Get the blended image from the masked function.
         ab = fn(a, b, *args, **kwargs)
 
@@ -42,13 +55,15 @@ def can_fade(fn: Callable) -> Callable:
     return wrapper
 
 
-def can_mask(fn: Callable) -> Callable:
+def can_mask(fn: Blend) -> Blend:
     """Apply a blending mask to the image."""
     @wraps(fn)
-    def wrapper(a: np.ndarray,
-                b: np.ndarray,
-                mask: Union[None, np.ndarray] = None,
-                *args, **kwargs) -> np.ndarray:
+    def wrapper(
+        a: ImgAry,
+        b: ImgAry,
+        mask: Union[None, ImgAry] = None,
+        *args, **kwargs
+    ) -> ImgAry:
         # Get the blended image from the decorated function.
         ab = fn(a, b, *args, **kwargs)
 
@@ -63,14 +78,14 @@ def can_mask(fn: Callable) -> Callable:
     return wrapper
 
 
-def will_clip(fn: Callable) -> Callable:
+def will_clip(fn: Blend) -> Blend:
     """Blends that use division or unbounded addition or
     subtraction can overflow the scale of the image. This will
     keep the image in scale by clipping the values below zero
     to zero and the values above one to one.
     """
     @wraps(fn)
-    def wrapper(a: np.ndarray, b: np.ndarray, *args, **kwargs) -> np.ndarray:
+    def wrapper(a: ImgAry, b: ImgAry, *args, **kwargs) -> ImgAry:
         ab = fn(a, b, *args, **kwargs)
         ab[ab < 0.0] = 0.0
         ab[ab > 1.0] = 1.0
@@ -78,15 +93,17 @@ def will_clip(fn: Callable) -> Callable:
     return wrapper
 
 
-def will_colorize(fn: Callable) -> Callable:
+def will_colorize(fn: Blend) -> Blend:
     """Ensure the images have the same number of color
     channels.
     """
     @wraps(fn)
-    def wrapper(a: np.ndarray,
-                b: np.ndarray,
-                colorize: bool = True,
-                *args, **kwargs) -> np.ndarray:
+    def wrapper(
+        a: ImgAry,
+        b: ImgAry,
+        colorize: bool = True,
+        *args, **kwargs
+    ) -> ImgAry:
         # If the image have different numbers of color channels,
         # add color channels to the one with the fewest.
         if colorize:
@@ -103,14 +120,14 @@ def will_colorize(fn: Callable) -> Callable:
     return wrapper
 
 
-def will_match_size(fn: Callable) -> Callable:
+def will_match_size(fn: Blend) -> Blend:
     """If the given images are different sizes, increase the size of
     the smaller image to match the larger image. Since this affects
     the size of the images, this will need to go before any decorators
     that use the original images to affect the resulting image.
     """
     @wraps(fn)
-    def wrapper(a: np.ndarray, b: np.ndarray, *args, **kwargs) -> np.ndarray:
+    def wrapper(a: ImgAry, b: ImgAry, *args, **kwargs) -> ImgAry:
         # Calculate the new size of the images.
         size = tuple(max(dim) for dim in zip(a.shape, b.shape))
 
@@ -126,7 +143,7 @@ def will_match_size(fn: Callable) -> Callable:
 
 
 # Debugging utilities.
-def print_array(a: np.ndarray, depth: int = 0, color: bool = True) -> None:
+def print_array(a: NumAry, depth: int = 0, color: bool = True) -> None:
     """Write the values of the given array to stdout."""
     if len(a.shape) > 1:
         print(' ' * (4 * depth) + '[')
@@ -144,7 +161,7 @@ def print_array(a: np.ndarray, depth: int = 0, color: bool = True) -> None:
 
 
 # Private utility functions.
-def _grayscale_to_rgb(a: np.ndarray) -> np.ndarray:
+def _grayscale_to_rgb(a: ImgAry) -> ImgAry:
     """Convert single channel image data to three channel."""
     new_shape = (*a.shape, 3)
     new_a = np.zeros(new_shape, dtype=a.dtype)
@@ -153,9 +170,11 @@ def _grayscale_to_rgb(a: np.ndarray) -> np.ndarray:
     return new_a
 
 
-def _resize_array(a: np.ndarray,
-                  size: tuple[int, ...],
-                  fill: float = 0.0) -> np.ndarray:
+def _resize_array(
+        a: ImgAry,
+        size: Size,
+        fill: float = 0.0
+    ) -> ImgAry:
     """Resize the array to the given size."""
     # Create array at the new size.
     resized = np.full(size, fill, dtype=a.dtype)

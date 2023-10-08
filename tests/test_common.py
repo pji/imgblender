@@ -3,509 +3,252 @@ test_common
 ~~~~~~~~~~~
 """
 import numpy as np
+import pytest as pt
 
 from imgblender import common as c
-from tests.common import ArrayTestCase
+
+
+# Fixtures.
+@pt.fixture
+def a():
+    """An array of zeros for testing."""
+    yield np.zeros((1, 5, 5), dtype=float)
+
+
+@pt.fixture
+def b():
+    """An array of ones for testing."""
+    yield np.ones((1, 5, 5), dtype=float)
 
 
 # Test cases.
-class CanFadeTestCase(ArrayTestCase):
-    def test_fades(self):
-        """When applied to a function, the faded decorator should
+class TestCanFade:
+    def test_fades(self, a, b):
+        """When given a fade amount, :func:`can_fade` should
         adjust how much the blending operation affects the base
         image by the given amount.
         """
-        # Expected value.
-        exp = np.array([
-            [
-                [0.5, 0.5, 0.5, 0.5, 0.5, ],
-                [0.5, 0.5, 0.5, 0.5, 0.5, ],
-                [0.5, 0.5, 0.5, 0.5, 0.5, ],
-                [0.5, 0.5, 0.5, 0.5, 0.5, ],
-                [0.5, 0.5, 0.5, 0.5, 0.5, ],
-            ],
-        ], dtype=np.float32)
-
-        # Test data and set up.
-        a = np.array([
-            [
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-            ],
-        ], dtype=np.float32)
-        b = np.array([
-            [
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-            ],
-        ], dtype=np.float32)
-        fade = 0.5
-
         @c.can_fade
         def spam(a, b):
             return b
 
-        # Run test.
-        act = spam(a, b, fade)
+        result = spam(a, b, 0.5)
+        assert (np.around(result, 4) == np.array([
+            [
+                [0.5, 0.5, 0.5, 0.5, 0.5,],
+                [0.5, 0.5, 0.5, 0.5, 0.5,],
+                [0.5, 0.5, 0.5, 0.5, 0.5,],
+                [0.5, 0.5, 0.5, 0.5, 0.5,],
+                [0.5, 0.5, 0.5, 0.5, 0.5,],
+            ],
+        ], dtype=float)).all()
 
-        # Determine test results.
-        self.assertArrayEqual(exp, act)
-
-    def test_no_fade(self):
-        """If no fade is passed, the output of the decorated function
-        should be returned without being affected by a fade.
+    def test_no_fades(self, a, b):
+        """If no fade is passed, :func:`can_fade` should not change the
+        returned data.
         """
-        # Expected value.
-        exp = np.array([
-            [
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-            ],
-        ], dtype=np.float32)
-
-        # Test data and set up.
-        a = np.array([
-            [
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-            ],
-        ], dtype=np.float32)
-        b = exp.copy()
-
         @c.can_fade
         def spam(a, b):
             return b
 
-        # Run test.
-        act = spam(a, b)
-
-        # Determine test results.
-        self.assertArrayEqual(exp, act)
+        result = spam(a, b)
+        assert (np.around(result, 4) == b).all()
 
 
-class CanMaskTestCase(ArrayTestCase):
-    def test_mask(self):
-        """When applied to a function, the can_mask decorator should
+class TestCanMask:
+    def test_mask(self, a, b):
+        """When applied to a function, :func:`can_mask` should
         adjust how much the blending operation affects each value
         of the base image based on the appropriate value of the given
         mask.
         """
-        # Expected value.
-        exp = np.array([
-            [
-                [0.00, 0.00, 0.00, 0.00, 0.00, ],
-                [0.25, 0.25, 0.25, 0.25, 0.25, ],
-                [0.50, 0.50, 0.50, 0.50, 0.50, ],
-                [0.75, 0.75, 0.75, 0.75, 0.75, ],
-                [1.00, 1.00, 1.00, 1.00, 1.00, ],
-            ],
-        ], dtype=np.float32)
+        @c.can_mask
+        def spam(a, b):
+            return b
 
-        # Test data and set up.
-        a = np.array([
-            [
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-            ],
-        ], dtype=np.float32)
-        b = np.array([
-            [
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-            ],
-        ], dtype=np.float32)
         mask = np.array([
             [
-                [1.00, 1.00, 1.00, 1.00, 1.00, ],
-                [0.75, 0.75, 0.75, 0.75, 0.75, ],
-                [0.50, 0.50, 0.50, 0.50, 0.50, ],
-                [0.25, 0.25, 0.25, 0.25, 0.25, ],
-                [0.00, 0.00, 0.00, 0.00, 0.00, ],
+                [1.00, 1.00, 1.00, 1.00, 1.00,],
+                [0.75, 0.75, 0.75, 0.75, 0.75,],
+                [0.50, 0.50, 0.50, 0.50, 0.50,],
+                [0.25, 0.25, 0.25, 0.25, 0.25,],
+                [0.00, 0.00, 0.00, 0.00, 0.00,],
             ],
-        ], dtype=np.float32)
+        ], dtype=float)
+        result = spam(b, a, mask)
+        assert (np.around(result, 4) == np.array([
+            [
+                [0.00, 0.00, 0.00, 0.00, 0.00,],
+                [0.25, 0.25, 0.25, 0.25, 0.25,],
+                [0.50, 0.50, 0.50, 0.50, 0.50,],
+                [0.75, 0.75, 0.75, 0.75, 0.75,],
+                [1.00, 1.00, 1.00, 1.00, 1.00,],
+            ],
+        ], dtype=float)).all()
 
-        @c.can_mask
-        def spam(a, b):
-            return b
-
-        # Run test.
-        act = spam(a, b, mask)
-
-        # Determine test results.
-        self.assertArrayEqual(exp, act)
-
-    def test_no_mask(self):
-        """If no mask is passed, the output of the decorated function
-        should not be can_mask.
+    def test_no_mask(self, a, b):
+        """If no mask is passed, :func:`can_mask` should not change the
+        returned data.
         """
-        # Expected value.
-        exp = np.array([
-            [
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-            ],
-        ], dtype=np.float32)
-
-        # Test data and set up.
-        a = np.array([
-            [
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-            ],
-        ], dtype=np.float32)
-        b = exp.copy()
-
         @c.can_mask
         def spam(a, b):
             return b
 
-        # Run test.
-        act = spam(a, b)
-
-        # Determine test results.
-        self.assertArrayEqual(exp, act)
+        result = spam(b, a)
+        assert (np.around(result, 4) == a).all()
 
 
-class WillClipTestCase(ArrayTestCase):
+class TestWillClip:
     def test_clips(self):
-        """When applied to a function, the will_clip decorator should
+        """When applied to a function, :func:`will_clip` should
         set any values in the output of the decorated function that
         are greater than one to one and any values that are less
         than zero to zero.
         """
-        # Expected value.
-        exp = np.array([
-            [
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-            ]
-        ], dtype=np.float32)
-
-        # Test data and set up.
-        a = np.array([
-            [
-                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
-                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
-                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
-                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
-                [-0.5, 0.0, 0.5, 1.0, 1.5, ],
-            ],
-        ], dtype=np.float32)
-        b = np.array([
-            [
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-            ],
-        ], dtype=np.float32)
-
         @c.will_clip
         def spam(a, b):
             return a + b
 
-        # Run test.
-        act = spam(a, b)
+        a = np.array([
+            [
+                [-0.5, 0.0, 0.5, 1.0, 1.5,],
+                [-0.5, 0.0, 0.5, 1.0, 1.5,],
+                [-0.5, 0.0, 0.5, 1.0, 1.5,],
+                [-0.5, 0.0, 0.5, 1.0, 1.5,],
+                [-0.5, 0.0, 0.5, 1.0, 1.5,],
+            ],
+        ], dtype=float)
+        b = np.array([
+            [
+                [0.0, 0.0, 0.0, 0.0, 0.0,],
+                [0.0, 0.0, 0.0, 0.0, 0.0,],
+                [0.0, 0.0, 0.0, 0.0, 0.0,],
+                [0.0, 0.0, 0.0, 0.0, 0.0,],
+                [0.0, 0.0, 0.0, 0.0, 0.0,],
+            ],
+        ], dtype=float)
+        result = spam(a, b)
+        assert (np.around(result, 4) == np.array([
+            [
+                [0.0, 0.0, 0.5, 1.0, 1.0,],
+                [0.0, 0.0, 0.5, 1.0, 1.0,],
+                [0.0, 0.0, 0.5, 1.0, 1.0,],
+                [0.0, 0.0, 0.5, 1.0, 1.0,],
+                [0.0, 0.0, 0.5, 1.0, 1.0,],
+            ]
+        ], dtype=float)).all()
 
-        # Determine test result.
-        self.assertArrayEqual(exp, act)
 
-
-class WillColorizeTestCase(ArrayTestCase):
+class TestWillColorize:
     def test_colorize_a(self):
-        """Given an RGB image and a grayscale image, the grayscale
-        image should be converted to RGB.
+        """Given an grayscale image and a RGB image, :func:`will_colorize`
+        should convert the grayscale to RGB.
         """
-        # Expected value.
-        exp = np.array([
-            [
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-            ]
-        ], dtype=np.float32)
-
-        # Test data and set up.
-        a = np.array([
-            [
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-            ],
-        ], dtype=np.float32)
-        b = np.array([
-            [
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-            ],
-        ], dtype=np.float32)
-
-        @c.will_colorize
-        def spam(a, b):
-            return b
-
-        # Run test.
-        act = spam(a, b)
-
-        # Determine test result.
-        self.assertArrayEqual(exp, act)
-
-    def test_colorize_b(self):
-        """Given an RGB image and a grayscale image, the grayscale
-        image should be converted to RGB.
-        """
-        # Expected value.
-        exp = np.array([
-            [
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-            ]
-        ], dtype=np.float32)
-
-        # Test data and set up.
-        a = np.array([
-            [
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-            ],
-        ], dtype=np.float32)
-        b = np.array([
-            [
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-            ],
-        ], dtype=np.float32)
-
         @c.will_colorize
         def spam(a, b):
             return a
 
-        # Run test.
-        act = spam(a, b)
+        a = np.zeros((1, 5, 5), dtype=float)
+        b = np.ones((1, 5, 5, 3), dtype=float)
+        result = spam(a, b)
+        assert (np.around(result, 4) == np.zeros(
+            (1, 5, 5, 3), dtype=float
+        )).all()
 
-        # Determine test result.
-        self.assertArrayEqual(exp, act)
-
-    def test_no_effect_when_both_grayscale(self):
-        """If both images only have one channel, the decorator doesn't
-        change either array.
+    def test_colorize_b(self):
+        """Given an RGB image and a grayscale image, :func:`will_colorize`
+        should convert the grayscale to RGB.
         """
-        # Expected value.
-        exp = np.array([
-            [
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-            ]
-        ], dtype=np.float32)
-
-        # Test data and set up.
-        a = np.array([
-            [
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-            ],
-        ], dtype=np.float32)
-        b = np.array([
-            [
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, ],
-            ],
-        ], dtype=np.float32)
-
-        @c.will_colorize
-        def spam(a, b):
-            return a + b
-
-        # Run test.
-        act = spam(a, b)
-
-        # Determine test result.
-        self.assertArrayEqual(exp, act)
-
-    def test_no_effect_when_both_rgb(self):
-        """If both images have three channels, the decorator doesn't
-        change either array.
-        """
-        # Expected value.
-        exp = np.array([
-            [
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-            ]
-        ], dtype=np.float32)
-
-        # Test data and set up.
-        a = np.array([
-            [
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-            ],
-        ], dtype=np.float32)
-        b = np.array([
-            [
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-                [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], ],
-            ]
-        ], dtype=np.float32)
-
-        @c.will_colorize
-        def spam(a, b):
-            return a + b
-
-        # Run test.
-        act = spam(a, b)
-
-        # Determine test result.
-        self.assertArrayEqual(exp, act)
-
-    def test_no_effect_when_off(self):
-        """When False is passed to the colorize parameter, the
-        decorator should not change the image data.
-        """
-        # Expected value.
-        exp = np.array([
-            [
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, 1.0, 1.0, ],
-            ],
-        ], dtype=np.float32)
-
-        # Test data and set up.
-        a = np.array([
-            [
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-                [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], ],
-            ],
-        ], dtype=np.float32)
-        b = exp.copy()
-        colorize = False
-
         @c.will_colorize
         def spam(a, b):
             return b
 
-        # Run test.
-        act = spam(a, b, colorize=colorize)
+        a = np.zeros((1, 5, 5, 3), dtype=float)
+        b = np.ones((1, 5, 5), dtype=float)
+        result = spam(a, b)
+        assert (np.around(result, 4) == np.ones(
+            (1, 5, 5, 3), dtype=float
+        )).all()
 
-        # Determine test result.
-        self.assertArrayEqual(exp, act)
+    def test_no_effect_when_both_grayscale(self):
+        """If both images only have one channel, :func:`will_colorize`
+        shouldn't change either array.
+        """
+        @c.will_colorize
+        def spam(a, b):
+            return a + b
+
+        a = np.zeros((1, 5, 5), dtype=float)
+        b = np.ones((1, 5, 5), dtype=float)
+        result = spam(a, b)
+        assert (np.around(result, 4) == b).all()
+
+    def test_no_effect_when_both_rgb(self):
+        """If both images have three channels, :func:`will_colorize`
+        shouldn't change either array.
+        """
+        @c.will_colorize
+        def spam(a, b):
+            return a + b
+
+        a = np.zeros((1, 5, 5, 3), dtype=float)
+        b = np.ones((1, 5, 5, 3), dtype=float)
+        result = spam(a, b)
+        assert (np.around(result, 4) == b).all()
+
+    def test_no_effect_when_off(self):
+        """If colorize is given `False`, :func:`will_colorize`
+        shouldn't change either array.
+        """
+        @c.will_colorize
+        def spam(a, b):
+            return b
+
+        a = np.zeros((1, 5, 5, 3), dtype=float)
+        b = np.ones((1, 5, 5), dtype=float)
+        result = spam(a, b, colorize=False)
+        assert (np.around(result, 4) == b).all()
 
 
-class WillMatchSizeTestCase(ArrayTestCase):
+class TestWillMatchSize:
     def test_clips(self):
         """When applied to a function, the will_match_size decorator
         should increase the size of a smaller image to the size of
         the larger image. The fill for the added area should be black.
         """
-        # Expected value.
-        exp = np.array([
-            [
-                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
-            ]
-        ], dtype=np.float32)
-
-        # Test data and set up.
-        a = np.array([
-            [
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-                [0.0, 0.0, 0.5, 1.0, 1.0, ],
-            ],
-        ], dtype=np.float32)
-        b = np.array([
-            [
-                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, ],
-            ],
-        ], dtype=np.float32)
-
         @c.will_match_size
         def spam(a, b):
             return a + b
 
-        # Run test.
-        act = spam(a, b)
-
-        # Determine test result.
-        self.assertArrayEqual(exp, act)
+        a = np.array([
+            [
+                [0.0, 0.0, 0.5, 1.0, 1.0,],
+                [0.0, 0.0, 0.5, 1.0, 1.0,],
+                [0.0, 0.0, 0.5, 1.0, 1.0,],
+                [0.0, 0.0, 0.5, 1.0, 1.0,],
+                [0.0, 0.0, 0.5, 1.0, 1.0,],
+            ],
+        ], dtype=float)
+        b = np.array([
+            [
+                [0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5,],
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,],
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,],
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,],
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,],
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,],
+                [0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5,],
+            ],
+        ], dtype=float)
+        result = spam(a, b)
+        assert (np.around(result, 4) == np.array([
+            [
+                [0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5,],
+                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0,],
+                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0,],
+                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0,],
+                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0,],
+                [0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 0.0,],
+                [0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5,],
+            ]
+        ], dtype=float)).all()

@@ -23,14 +23,14 @@ can find examples of how to use it in the examples directory.
 Is it portable?
 ===============
 It should be. It's pure Python, and the main library it uses is
-numpy.
+`numpy`.
 
 
 Can I install this package from pipenv?
 =======================================
 Yes, but imgblender is not currently available through PyPI. You
 will need to clone the repository to the system you want to install
-imgblender on and run the following::
+`imgblender` on and run the following::
 
     pip install path/to/local/copy
 
@@ -40,12 +40,18 @@ this repository.
 
 How do I run the tests?
 =======================
-The `precommit.py` script in the root of the repository will run the
-unit tests and a few other tests beside. Otherwise, the unit tests
-are written with the standard unittest module, so you can run the
-tests with::
+The `Makefile` in the root of the repository is set up to simplify
+testing. To run just the unit tests::
 
-    python -m unittest discover tests
+    make test
+
+To run the verbose version of the unit tests::
+
+    make testv
+
+To run the full suite of tests and checks::
+
+    make pre
 
 
 How do I contribute?
