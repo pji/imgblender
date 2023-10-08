@@ -43,7 +43,7 @@ operations is:
         value of one in the mask means that pixel is fully affected by
         the operation. A value of zero means the pixel is not affected
         by the operation.
-    :return: A :class:numpy.ndarray object.
+    :return: A :class:`numpy.ndarray` object.
     :rtype: numpy.ndarray
 
 
@@ -56,23 +56,24 @@ data, to the algorithms themselves, it's all just floating-point math.
 
 However, there is one case where a bias towards image data shows up:
 
-    * You pass two arrays with differing shapes.
-    * The size of their last dimension is different.
+    * You pass two arrays with differing shapes,
+    * The size of their last dimension is different,
     * One of the two arrays has a last dimension with size three.
 
 To perform the blending algorithm, the two arrays must be the same
 shape. In most cases, differences between the two shapes will be
-handled through the ```will_match_size``` decorator, which adds zeros
-to the smaller array to make their sizes match. However, in the case
-described above, something different happens.
+handled through the :func:`imgblender.common.will_match_size`
+decorator, which adds zeros to the smaller array to make their sizes
+match. However, in the case described above, something different
+happens.
 
 Since color image data often has a last dimension size of three,
 representing color channels, the case above is intercepted by the
-```will_colorize``` decorator. That decorator assumes the array
-that doesn't have a last dimension size of three is single channel
-image data ("grayscale") and will add a new last dimension of size
-three. The values will be the original single value repeated three
-times. To demonstrate::
+:func:`img.blender.common.will_colorize` decorator. That decorator
+assumes the array that doesn't have a last dimension size of three
+is single channel image data ("grayscale") and will add a new last
+dimension of size three. The values will be the original single
+value repeated three times. To demonstrate::
 
     >>> from imgblender.common import will_colorize
     >>> a = np.array([
@@ -108,17 +109,21 @@ times. To demonstrate::
     >>> a_.shape
     (3, 3, 3)
 
-The value of a returned by ```spam()``` in the demonstration has an
+The value returned by ```spam()``` in the demonstration has an
 extra dimension of size three added, and the values are three copies
-of the values in the original a.
+of the values in the original ```a````.
 
 This can be turned off by passing ```False``` ro the ```colorize```
 parameter of the blend.
 """
 import numpy as np
+from numpy.typing import NDArray
 
-from imgblender.common import (can_fade, can_mask, will_clip,
-                               will_colorize, will_match_size)
+from imgblender.common import *
+
+
+# Typing.
+ImgAry = NDArray[np.float_]
 
 
 # Simple replacement blends.
@@ -126,7 +131,7 @@ from imgblender.common import (can_fade, can_mask, will_clip,
 @can_fade
 @will_match_size
 @will_colorize
-def replace(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def replace(a: ImgAry, b: ImgAry) -> ImgAry:
     """Simple replacement filter. Can double as an opacity filter
     if passed can_fade amount, but otherwise this will just replace the
     values in a with the values in b.
@@ -140,14 +145,15 @@ def replace(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     return b
 
@@ -158,7 +164,7 @@ def replace(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def darker(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def darker(a: ImgAry, b: ImgAry) -> ImgAry:
     """Replaces values in the existing image with values from the
     blending image when the value in the blending image is darker.
 
@@ -171,14 +177,15 @@ def darker(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     ab = a.copy()
     ab[b < a] = b[b < a]
@@ -190,7 +197,7 @@ def darker(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def multiply(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def multiply(a: ImgAry, b: ImgAry) -> ImgAry:
     """Multiplies the values of the two images, leading to darker
     values. This is useful for shadows and similar situations.
 
@@ -203,14 +210,15 @@ def multiply(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     return a * b
 
@@ -220,7 +228,7 @@ def multiply(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def color_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def color_burn(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to multiply, but is darker and produces higher
     contrast.
 
@@ -233,14 +241,15 @@ def color_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     m = b != 0
     ab = np.zeros_like(a)
@@ -254,7 +263,7 @@ def color_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def linear_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def linear_burn(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to multiply, but is darker, produces less saturated
     colors than color burn, and produces more contrast in the shadows.
 
@@ -267,14 +276,15 @@ def linear_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     return a + b - 1
 
@@ -285,7 +295,7 @@ def linear_burn(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def lighter(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def lighter(a: ImgAry, b: ImgAry) -> ImgAry:
     """Replaces values in the existing image with values from the
     blending image when the value in the blending image is lighter.
 
@@ -298,14 +308,15 @@ def lighter(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     ab = a.copy()
     ab[b > a] = b[b > a]
@@ -317,7 +328,7 @@ def lighter(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def screen(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def screen(a: ImgAry, b: ImgAry) -> ImgAry:
     """Performs an inverse multiplication on the colors from the two
     images then inverse the colors again. This leads to overall
     brighter colors and is the opposite of multiply.
@@ -331,19 +342,20 @@ def screen(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
-    rev_a = 1 - a
-    rev_b = 1 - b
+    rev_a = 1.0 - a
+    rev_b = 1.0 - b
     ab = rev_a * rev_b
-    return 1 - ab
+    return 1.0 - ab
 
 
 @will_clip
@@ -351,7 +363,7 @@ def screen(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def color_dodge(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def color_dodge(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to screen, but brighter and decreases the contrast.
 
     :param a: The existing values. This is like the bottom layer in
@@ -363,14 +375,15 @@ def color_dodge(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     ab = np.ones_like(a)
     ab[b != 1] = a[b != 1] / (1 - b[b != 1])
@@ -382,7 +395,7 @@ def color_dodge(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def linear_dodge(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def linear_dodge(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to screen but produces stronger results.
 
     :param a: The existing values. This is like the bottom layer in
@@ -394,14 +407,15 @@ def linear_dodge(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     return a + b
 
@@ -412,7 +426,7 @@ def linear_dodge(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def difference(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def difference(a: ImgAry, b: ImgAry) -> ImgAry:
     """Takes the absolute value of the difference of the two values.
     This is often useful in creating complex patterns or when
     aligning two images.
@@ -426,14 +440,15 @@ def difference(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     return np.abs(a - b)
 
@@ -443,7 +458,7 @@ def difference(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def exclusion(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def exclusion(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to difference, with the result tending to gray
     rather than black.
 
@@ -456,14 +471,15 @@ def exclusion(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     ab = a + b - 2 * a * b
     return ab
@@ -475,7 +491,7 @@ def exclusion(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def hard_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def hard_light(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to the blending image being a harsh light shining
     on the existing image.
 
@@ -488,14 +504,15 @@ def hard_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     ab = np.zeros_like(a)
     ab[a < .5] = 2 * a[a < .5] * b[a < .5]
@@ -508,7 +525,7 @@ def hard_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def hard_mix(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def hard_mix(a: ImgAry, b: ImgAry) -> ImgAry:
     """Increases the saturation and contrast. It's best used with
     masks and can_fade.
 
@@ -521,14 +538,15 @@ def hard_mix(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     ab = np.zeros_like(a)
     ab[a < 1 - b] = 0
@@ -541,7 +559,7 @@ def hard_mix(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def linear_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def linear_light(a: ImgAry, b: ImgAry) -> ImgAry:
     """Combines linear dodge and linear burn.
 
     :param a: The existing values. This is like the bottom layer in
@@ -553,16 +571,17 @@ def linear_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
-    ab = b + 2 * a - 1
+    ab = b + 2.0 * a - 1.0
     return ab
 
 
@@ -571,7 +590,7 @@ def linear_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def overlay(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def overlay(a: ImgAry, b: ImgAry) -> ImgAry:
     """Combines screen and multiply blends.
 
     :param a: The existing values. This is like the bottom layer in
@@ -583,14 +602,15 @@ def overlay(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     mask = a >= .5
     ab = np.zeros_like(a)
@@ -604,7 +624,7 @@ def overlay(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def pin_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def pin_light(a: ImgAry, b: ImgAry) -> ImgAry:
     """Combines lighten and darken blends.
 
     :param a: The existing values. This is like the bottom layer in
@@ -616,14 +636,15 @@ def pin_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     # Build array masks to handle how the algorithm changes.
     m1 = np.zeros(a.shape, bool)
@@ -647,7 +668,7 @@ def pin_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def soft_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def soft_light(a: ImgAry, b: ImgAry) -> ImgAry:
     """Similar to overlay, but biases towards the blending value
     rather than the existing value.
 
@@ -660,14 +681,15 @@ def soft_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     m = np.zeros(a.shape, bool)
     ab = np.zeros_like(a)
@@ -682,7 +704,7 @@ def soft_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 @can_fade
 @will_match_size
 @will_colorize
-def vivid_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def vivid_light(a: ImgAry, b: ImgAry) -> ImgAry:
     """Good for color grading when faded.
 
     :param a: The existing values. This is like the bottom layer in
@@ -694,14 +716,15 @@ def vivid_light(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     :param fade: (Optional.) The amount the blended values should
         affect the existing values. This is a float between zero
         and one, where zero is no effect and one is full effect.
-        See common.can_fade for more details.
+        See :func:`imgblender.common.can_fade` for more details.
     :param mask: (Optional.) An image mask that is used to determine
         the effect the blend should have on the existing values.
-        This is a :class:numpy.ndarray of floats between zero and
+        This is a :class:`numpy.ndarray` of floats between zero and
         one, where zero is no effect and one is full effect. See
-        common.can_mask for details.
-    :return: An array that contains the values of the blended arrays.
-    :rtype: np.ndarray
+        :func:`imgblender.common.can_mask` for details.
+    :return: An :class:`numpy.ndarray` that contains the values of the
+        blended arrays.
+    :rtype: numpy.ndarray
     """
     # Create masks to handle the algorithm change and avoid division
     # by zero.

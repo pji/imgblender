@@ -10,6 +10,12 @@ from typing import Callable, Union
 import numpy as np
 
 
+# Exportable names.
+__all__ = [
+    'can_fade', 'can_mask', 'will_clip', 'will_colorize', 'will_match_size'
+]
+
+
 # Global data.
 X, Y, Z = 2, 1, 0
 
