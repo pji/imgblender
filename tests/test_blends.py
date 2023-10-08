@@ -5,332 +5,347 @@ test_blends
 Unit tests for the imgblender.blends module.
 """
 import numpy as np
+import pytest as pt
 
 from imgblender import blends
-from tests.common import ArrayTestCase, A, B, C, D
 
 
-# Base test case.
-class BlendTestCase(ArrayTestCase):
-    def run_test(self, blend, exp, a=A, b=B, *args, **kwargs):
-        """Run a basic test on a blend function."""
-        # Run test.
-        act = blend(a, b, *args, **kwargs)
+# Fixtures.
+@pt.fixture
+def a():
+    """A :class:`numpy.ndarray` of image data for testing."""
+    yield np.array([
+        [
+            [0.00, 0.25, 0.50, 0.75, 1.00,],
+            [0.25, 0.50, 0.75, 1.00, 0.75,],
+            [0.50, 0.75, 1.00, 0.75, 0.50,],
+            [0.75, 1.00, 0.75, 0.50, 0.25,],
+            [1.00, 0.75, 0.50, 0.25, 0.00,],
+        ],
+    ], dtype=float)
 
-        # Determine test result.
-        self.assertArrayEqual(exp, act, round_=True)
+
+@pt.fixture
+def b():
+    """A :class:`numpy.ndarray` of images data for testing."""
+    yield np.array([
+        [
+            [1.00, 0.75, 0.50, 0.25, 0.00,],
+            [0.75, 1.00, 0.75, 0.50, 0.25,],
+            [0.50, 0.75, 1.00, 0.75, 0.50,],
+            [0.25, 0.50, 0.75, 1.00, 0.75,],
+            [0.00, 0.25, 0.50, 0.75, 1.00,],
+        ],
+    ], dtype=float)
+
+
+@pt.fixture
+def c():
+    """A :class:`numpy.ndarray` of images data for testing."""
+    yield np.array([
+        [
+            [0.5000, 0.3750, 0.2500, 0.1250, 0.0000,],
+            [0.3750, 0.2500, 0.1250, 0.0000, 0.1250,],
+            [0.2500, 0.1250, 0.0000, 0.1250, 0.2500,],
+            [0.1250, 0.0000, 0.1250, 0.2500, 0.3750,],
+            [0.0000, 0.1250, 0.2500, 0.3750, 0.5000,],
+        ],
+    ], dtype=float)
+
+
+@pt.fixture
+def d():
+    """A :class:`numpy.ndarray` of images data for testing."""
+    yield np.array([
+        [
+            [0.0000, 0.1250, 0.2500, 0.3750, 0.5000,],
+            [0.1250, 0.0000, 0.1250, 0.2500, 0.3750,],
+            [0.2500, 0.1250, 0.0000, 0.1250, 0.2500,],
+            [0.3750, 0.2500, 0.1250, 0.0000, 0.1250,],
+            [0.5000, 0.3750, 0.2500, 0.1250, 0.0000,],
+        ],
+    ], dtype=float)
 
 
 # Test cases.
-class ColorBurnTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, divide the value in the base
-        image by the value in the blending image.
-        """
-        exp = np.array([
-            [
-                [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
-                [0.0000, 0.5000, 0.6667, 1.0000, 0.0000],
-                [0.0000, 0.6667, 1.0000, 0.6667, 0.0000],
-                [0.0000, 1.0000, 0.6667, 0.5000, 0.0000],
-                [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.color_burn
-        self.run_test(blend, exp)
+def test_color_burn(a, b):
+    """When blending image data, :func:`color_burn` should divide the
+    value in the base image by the value in the blending image.
+    """
+    result = blends.color_burn(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
+            [0.0000, 0.5000, 0.6667, 1.0000, 0.0000],
+            [0.0000, 0.6667, 1.0000, 0.6667, 0.0000],
+            [0.0000, 1.0000, 0.6667, 0.5000, 0.0000],
+            [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
+        ],
+    ], dtype=float)).all()
 
 
-class ColorDodgeTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, increase the value in the base
-        image by an amount relative to the value in the blending
-        image. The relation is through dividing by the inverse of the
-        blending image.
-        """
-        exp = np.array([
-            [
-                [0.5000, 0.4286, 0.3333, 0.2000, 0.0000],
-                [0.4286, 0.2500, 0.1429, 0.0000, 0.2000],
-                [0.3333, 0.1429, 0.0000, 0.1429, 0.3333],
-                [0.2000, 0.0000, 0.1429, 0.2500, 0.4286],
-                [0.0000, 0.2000, 0.3333, 0.4286, 0.5000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.color_dodge
-        self.run_test(blend, exp, C, D)
+def test_color_dodge(c, d):
+    """When blending image data, :func:`color_burn` should increase the
+    value in the base image by an amount relative to the value in the
+    blending image. The relation is through dividing by the inverse of
+    the blending image.
+    """
+    result = blends.color_dodge(c, d)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.5000, 0.4286, 0.3333, 0.2000, 0.0000],
+            [0.4286, 0.2500, 0.1429, 0.0000, 0.2000],
+            [0.3333, 0.1429, 0.0000, 0.1429, 0.3333],
+            [0.2000, 0.0000, 0.1429, 0.2500, 0.4286],
+            [0.0000, 0.2000, 0.3333, 0.4286, 0.5000],
+        ],
+    ], dtype=float)).all()
 
 
-class DarkerTestCase(BlendTestCase):
-    def test_darker(self):
-        """When blending image data, always take the lowest value."""
-        exp = np.array([
-            [
-                [0.00, 0.25, 0.50, 0.25, 0.00, ],
-                [0.25, 0.50, 0.75, 0.50, 0.25, ],
-                [0.50, 0.75, 1.00, 0.75, 0.50, ],
-                [0.25, 0.50, 0.75, 0.50, 0.25, ],
-                [0.00, 0.25, 0.50, 0.25, 0.00, ],
-            ],
-        ], dtype=np.float32)
-        blend = blends.darker
-        self.run_test(blend, exp)
+def test_darker(a, b):
+    """When blending image data, :func:`darker` should always
+    take the lowest value.
+    """
+    result = blends.darker(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.00, 0.25, 0.50, 0.25, 0.00,],
+            [0.25, 0.50, 0.75, 0.50, 0.25,],
+            [0.50, 0.75, 1.00, 0.75, 0.50,],
+            [0.25, 0.50, 0.75, 0.50, 0.25,],
+            [0.00, 0.25, 0.50, 0.25, 0.00,],
+        ],
+    ], dtype=float)).all()
 
 
-class DifferenceTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, take the absolute value of the
-        difference between the two colors.
-        """
-        exp = np.array([
-            [
-                [1.0000, 0.5000, 0.0000, 0.5000, 1.0000],
-                [0.5000, 0.5000, 0.0000, 0.5000, 0.5000],
-                [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
-                [0.5000, 0.5000, 0.0000, 0.5000, 0.5000],
-                [1.0000, 0.5000, 0.0000, 0.5000, 1.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.difference
-        self.run_test(blend, exp)
+def test_difference(a, b):
+    """When blending image data, :func:`difference` should take the
+    absolute value of the difference between the two colors.
+    """
+    result = blends.difference(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [1.0000, 0.5000, 0.0000, 0.5000, 1.0000],
+            [0.5000, 0.5000, 0.0000, 0.5000, 0.5000],
+            [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
+            [0.5000, 0.5000, 0.0000, 0.5000, 0.5000],
+            [1.0000, 0.5000, 0.0000, 0.5000, 1.0000],
+        ],
+    ], dtype=float)).all()
 
 
-class ExclusionTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, subtract the double product of
-        the colors from the sum of the colors.
-        """
-        exp = np.array([
-            [
-                [1.0000, 0.6250, 0.5000, 0.6250, 1.0000],
-                [0.6250, 0.5000, 0.3750, 0.5000, 0.6250],
-                [0.5000, 0.3750, 0.0000, 0.3750, 0.5000],
-                [0.6250, 0.5000, 0.3750, 0.5000, 0.6250],
-                [1.0000, 0.6250, 0.5000, 0.6250, 1.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.exclusion
-        self.run_test(blend, exp)
+def test_exclusion(a, b):
+    """When blending image data, :func:`exclusion` should subtract the
+    double product of the colors from the sum of the colors.
+    """
+    result = blends.exclusion(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [1.0000, 0.6250, 0.5000, 0.6250, 1.0000],
+            [0.6250, 0.5000, 0.3750, 0.5000, 0.6250],
+            [0.5000, 0.3750, 0.0000, 0.3750, 0.5000],
+            [0.6250, 0.5000, 0.3750, 0.5000, 0.6250],
+            [1.0000, 0.6250, 0.5000, 0.6250, 1.0000],
+        ],
+    ], dtype=float)).all()
 
 
-class HardLightTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, perform a hard light blend."""
-        exp = np.array([
-            [
-                [0.0000, 0.3750, 0.5000, 0.6250, 1.0000],
-                [0.3750, 1.0000, 0.8750, 1.0000, 0.6250],
-                [0.5000, 0.8750, 1.0000, 0.8750, 0.5000],
-                [0.6250, 1.0000, 0.8750, 1.0000, 0.3750],
-                [1.0000, 0.6250, 0.5000, 0.3750, 0.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.hard_light
-        self.run_test(blend, exp)
+def test_hard_light(a, b):
+    """When blending image data, :func:`hard_light` should perform a
+    hard light blend.
+    """
+    result = blends.hard_light(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.3750, 0.5000, 0.6250, 1.0000],
+            [0.3750, 1.0000, 0.8750, 1.0000, 0.6250],
+            [0.5000, 0.8750, 1.0000, 0.8750, 0.5000],
+            [0.6250, 1.0000, 0.8750, 1.0000, 0.3750],
+            [1.0000, 0.6250, 0.5000, 0.3750, 0.0000],
+        ],
+    ], dtype=float)).all()
 
 
-class HardMixTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, perform a hard mix blend."""
-        exp = np.array([
-            [
-                [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
-                [0.0000, 1.0000, 1.0000, 1.0000, 0.0000],
-                [0.0000, 1.0000, 1.0000, 1.0000, 0.0000],
-                [0.0000, 1.0000, 1.0000, 1.0000, 0.0000],
-                [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.hard_mix
-        self.run_test(blend, exp)
+def test_hard_mix(a, b):
+    """When blending image data, :func:`hard_mix` should perform a
+    hard mix blend.
+    """
+    result = blends.hard_mix(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
+            [0.0000, 1.0000, 1.0000, 1.0000, 0.0000],
+            [0.0000, 1.0000, 1.0000, 1.0000, 0.0000],
+            [0.0000, 1.0000, 1.0000, 1.0000, 0.0000],
+            [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
+        ],
+    ], dtype=float)).all()
 
 
-class LighterTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, always take the highest value."""
-        exp = np.array([
-            [
-                [1.0000, 0.7500, 0.5000, 0.7500, 1.0000],
-                [0.7500, 1.0000, 0.7500, 1.0000, 0.7500],
-                [0.5000, 0.7500, 1.0000, 0.7500, 0.5000],
-                [0.7500, 1.0000, 0.7500, 1.0000, 0.7500],
-                [1.0000, 0.7500, 0.5000, 0.7500, 1.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.lighter
-        self.run_test(blend, exp)
+def test_lighter(a, b):
+    """When blending image data, :func:`lighter` should always take the
+    highest value.
+    """
+    result = blends.lighter(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [1.0000, 0.7500, 0.5000, 0.7500, 1.0000],
+            [0.7500, 1.0000, 0.7500, 1.0000, 0.7500],
+            [0.5000, 0.7500, 1.0000, 0.7500, 0.5000],
+            [0.7500, 1.0000, 0.7500, 1.0000, 0.7500],
+            [1.0000, 0.7500, 0.5000, 0.7500, 1.0000],
+        ],
+    ], dtype=float)).all()
 
 
-class LinearBurnTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, divide the value in the base
-        image by the value in the blending image.
-        """
-        exp = np.array([
-            [
-                [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
-                [0.0000, 0.5000, 0.5000, 0.5000, 0.0000],
-                [0.0000, 0.5000, 1.0000, 0.5000, 0.0000],
-                [0.0000, 0.5000, 0.5000, 0.5000, 0.0000],
-                [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.linear_burn
-        self.run_test(blend, exp)
+def test_linear_burn(a, b):
+    """When blending image data, :func:`linear_burn` should divide the
+    value in the base image by the value in the blending image.
+    """
+    result = blends.linear_burn(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
+            [0.0000, 0.5000, 0.5000, 0.5000, 0.0000],
+            [0.0000, 0.5000, 1.0000, 0.5000, 0.0000],
+            [0.0000, 0.5000, 0.5000, 0.5000, 0.0000],
+            [0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
+        ],
+    ], dtype=float)).all()
 
 
-class LinearDodgeTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, add the colors together."""
-        exp = np.array([
-            [
-                [0.5000, 0.5000, 0.5000, 0.5000, 0.5000],
-                [0.5000, 0.2500, 0.2500, 0.2500, 0.5000],
-                [0.5000, 0.2500, 0.0000, 0.2500, 0.5000],
-                [0.5000, 0.2500, 0.2500, 0.2500, 0.5000],
-                [0.5000, 0.5000, 0.5000, 0.5000, 0.5000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.linear_dodge
-        self.run_test(blend, exp, C, D)
+def test_linear_dodge(c, d):
+    """When blending image data, :func:`linear_dodge` should add the
+    colors together.
+    """
+    result = blends.linear_dodge(c, d)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.5000, 0.5000, 0.5000, 0.5000, 0.5000],
+            [0.5000, 0.2500, 0.2500, 0.2500, 0.5000],
+            [0.5000, 0.2500, 0.0000, 0.2500, 0.5000],
+            [0.5000, 0.2500, 0.2500, 0.2500, 0.5000],
+            [0.5000, 0.5000, 0.5000, 0.5000, 0.5000],
+        ],
+    ], dtype=float)).all()
 
 
-class LinearLightTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, perform a linear light blend."""
-        exp = np.array([
-            [
-                [0.0000, 0.2500, 0.5000, 0.7500, 1.0000],
-                [0.2500, 1.0000, 1.0000, 1.0000, 0.7500],
-                [0.5000, 1.0000, 1.0000, 1.0000, 0.5000],
-                [0.7500, 1.0000, 1.0000, 1.0000, 0.2500],
-                [1.0000, 0.7500, 0.5000, 0.2500, 0.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.linear_light
-        self.run_test(blend, exp)
+def test_linear_light(a, b):
+    """When blending image data, :func:`linear_light` should add the
+    colors together.
+    """
+    result = blends.linear_light(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.2500, 0.5000, 0.7500, 1.0000],
+            [0.2500, 1.0000, 1.0000, 1.0000, 0.7500],
+            [0.5000, 1.0000, 1.0000, 1.0000, 0.5000],
+            [0.7500, 1.0000, 1.0000, 1.0000, 0.2500],
+            [1.0000, 0.7500, 0.5000, 0.2500, 0.0000],
+        ],
+    ], dtype=float)).all()
 
 
-class MultiplyTestCase(BlendTestCase):
-    def test_multiply(self):
-        """When blending image data, multiply the two values."""
-        exp = np.array([
-            [
-                [0.0000, 0.1875, 0.2500, 0.1875, 0.0000, ],
-                [0.1875, 0.5000, 0.5625, 0.5000, 0.1875, ],
-                [0.2500, 0.5625, 1.0000, 0.5625, 0.2500, ],
-                [0.1875, 0.5000, 0.5625, 0.5000, 0.1875, ],
-                [0.0000, 0.1875, 0.2500, 0.1875, 0.0000, ],
-            ],
-        ], dtype=np.float32)
-        blend = blends.multiply
-        self.run_test(blend, exp)
+def test_multiply(a, b):
+    """When blending image data, :func:`multiply` should multiply the
+    two values.
+    """
+    result = blends.multiply(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.1875, 0.2500, 0.1875, 0.0000, ],
+            [0.1875, 0.5000, 0.5625, 0.5000, 0.1875, ],
+            [0.2500, 0.5625, 1.0000, 0.5625, 0.2500, ],
+            [0.1875, 0.5000, 0.5625, 0.5000, 0.1875, ],
+            [0.0000, 0.1875, 0.2500, 0.1875, 0.0000, ],
+        ],
+    ], dtype=float)).all()
 
 
-class OverlayTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, perform an overlay blend."""
-        exp = np.array([
-            [
-                [0.0000, 0.3750, 0.5000, 0.6250, 1.0000],
-                [0.3750, 1.0000, 0.8750, 1.0000, 0.6250],
-                [0.5000, 0.8750, 1.0000, 0.8750, 0.5000],
-                [0.6250, 1.0000, 0.8750, 1.0000, 0.3750],
-                [1.0000, 0.6250, 0.5000, 0.3750, 0.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.overlay
-        self.run_test(blend, exp)
+def test_overlay(a, b):
+    """When blending image data, :func:`overlay` should perform an
+    overlay blend.
+    """
+    result = blends.overlay(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.3750, 0.5000, 0.6250, 1.0000],
+            [0.3750, 1.0000, 0.8750, 1.0000, 0.6250],
+            [0.5000, 0.8750, 1.0000, 0.8750, 0.5000],
+            [0.6250, 1.0000, 0.8750, 1.0000, 0.3750],
+            [1.0000, 0.6250, 0.5000, 0.3750, 0.0000],
+        ],
+    ], dtype=float)).all()
 
 
-class PinLightTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, perform an pin light blend."""
-        exp = np.array([
-            [
-                [0.0000, 0.5000, 0.5000, 0.5000, 1.0000],
-                [0.5000, 1.0000, 0.7500, 1.0000, 0.5000],
-                [0.5000, 0.7500, 1.0000, 0.7500, 0.5000],
-                [0.5000, 1.0000, 0.7500, 1.0000, 0.5000],
-                [1.0000, 0.5000, 0.5000, 0.5000, 0.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.pin_light
-        self.run_test(blend, exp)
+def test_pin_light(a, b):
+    """When blending image data, :func:`pin_light` should perform an pin
+    light blend.
+    """
+    result = blends.pin_light(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.5000, 0.5000, 0.5000, 1.0000],
+            [0.5000, 1.0000, 0.7500, 1.0000, 0.5000],
+            [0.5000, 0.7500, 1.0000, 0.7500, 0.5000],
+            [0.5000, 1.0000, 0.7500, 1.0000, 0.5000],
+            [1.0000, 0.5000, 0.5000, 0.5000, 0.0000],
+        ],
+    ], dtype=float)).all()
 
 
-class ReplaceTestCase(BlendTestCase):
-    def test_replace(self):
-        """When passed two sets of image data, return the second set."""
-        # Expected value.
-        exp = np.array([
-            [
-                [1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, ],
-                [1.0, 1.0, 1.0, ],
-            ],
-        ], dtype=np.float32)
-
-        # Test data and set up.
-        blend = blends.replace
-        a = np.array([
-            [
-                [0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, ],
-                [0.0, 0.0, 0.0, ],
-            ],
-        ], dtype=np.float32)
-        b = exp.copy()
-
-        # Run test and determine result
-        self.run_test(blend, exp, a, b)
+def test_replace(a, b):
+    """When blending image data, :func:`replace` should return the
+    second set.
+    """
+    result = blends.replace(a, b)
+    assert (np.around(result, 4) == b).all()
 
 
-class ScreenTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, increase the value in the base
-        image by an amount relative to the value in the blending
-        image.
-        """
-        exp = np.array([
-            [
-                [1.0000, 0.8125, 0.7500, 0.8125, 1.0000],
-                [0.8125, 1.0000, 0.9375, 1.0000, 0.8125],
-                [0.7500, 0.9375, 1.0000, 0.9375, 0.7500],
-                [0.8125, 1.0000, 0.9375, 1.0000, 0.8125],
-                [1.0000, 0.8125, 0.7500, 0.8125, 1.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.screen
-        self.run_test(blend, exp)
+def test_screen(a, b):
+    """When blending image data, :func:`screen` should increase the
+    value in the base image by an amount relative to the value in the
+    blending image.
+    """
+    result = blends.screen(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [1.0000, 0.8125, 0.7500, 0.8125, 1.0000],
+            [0.8125, 1.0000, 0.9375, 1.0000, 0.8125],
+            [0.7500, 0.9375, 1.0000, 0.9375, 0.7500],
+            [0.8125, 1.0000, 0.9375, 1.0000, 0.8125],
+            [1.0000, 0.8125, 0.7500, 0.8125, 1.0000],
+        ],
+    ], dtype=float)).all()
 
 
-class SoftLightTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, perform an soft light blend."""
-        exp = np.array([
-            [
-                [1.0000, 0.6562, 0.5000, 0.3750, 0.0000],
-                [0.6562, 1.0000, 0.8080, 0.7071, 0.3750],
-                [0.5000, 0.8080, 1.0000, 0.8080, 0.5000],
-                [0.3750, 0.7071, 0.8080, 1.0000, 0.6562],
-                [0.0000, 0.3750, 0.5000, 0.6562, 1.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.soft_light
-        self.run_test(blend, exp)
+def test_soft_light(a, b):
+    """When blending image data, :func:`soft_light` should perform an
+    soft light blend.
+    """
+    result = blends.soft_light(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [1.0000, 0.6562, 0.5000, 0.3750, 0.0000],
+            [0.6562, 1.0000, 0.8080, 0.7071, 0.3750],
+            [0.5000, 0.8080, 1.0000, 0.8080, 0.5000],
+            [0.3750, 0.7071, 0.8080, 1.0000, 0.6562],
+            [0.0000, 0.3750, 0.5000, 0.6562, 1.0000],
+        ],
+    ], dtype=float)).all()
 
 
-class VividLightTestCase(BlendTestCase):
-    def test_blend(self):
-        """When blending image data, perform an vivid light blend."""
-        exp = np.array([
-            [
-                [0.0000, 0.5000, 0.5000, 0.5000, 0.0000],
-                [0.5000, 1.0000, 1.0000, 0.0000, 0.5000],
-                [0.5000, 1.0000, 0.0000, 1.0000, 0.5000],
-                [0.5000, 0.0000, 1.0000, 1.0000, 0.5000],
-                [0.0000, 0.5000, 0.5000, 0.5000, 0.0000],
-            ],
-        ], dtype=np.float32)
-        blend = blends.vivid_light
-        self.run_test(blend, exp)
+def test_vivid_light(a, b):
+    """When blending image data, :func:`vivid_light` should perform an
+    vivid light blend.
+    """
+    result = blends.vivid_light(a, b)
+    assert (np.around(result, 4) == np.array([
+        [
+            [0.0000, 0.5000, 0.5000, 0.5000, 0.0000],
+            [0.5000, 1.0000, 1.0000, 0.0000, 0.5000],
+            [0.5000, 1.0000, 0.0000, 1.0000, 0.5000],
+            [0.5000, 0.0000, 1.0000, 1.0000, 0.5000],
+            [0.0000, 0.5000, 0.5000, 0.5000, 0.0000],
+        ],
+    ], dtype=float)).all()
