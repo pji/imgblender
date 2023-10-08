@@ -16,9 +16,11 @@ import sys
 import unittest as ut
 from textwrap import wrap
 
+import pytest
+
 import mypy.api
 import pycodestyle as pcs
-import rstcheck
+import rstcheck_core.checker as rstchecker
 
 
 # Script configuration.
@@ -39,12 +41,13 @@ def import_modules(names):
 
 
 # Precommit checks.
-def check_doctests(modules):
+def check_doctests(names):
     """Run documentation tests."""
     print('Running doctests...')
-    if not modules:
+    if not names:
         print('No doctests found.')
     else:
+        modules = import_modules(names)
         for mod in modules:
             doctest.testmod(mod)
         print('Doctests complete.')
@@ -54,7 +57,7 @@ def check_requirements():
     """Check requirements."""
     print('Checking requirements...')
     os.putenv('PIPENV_VERBOSITY', '-1')
-    cmd = '.venv/bin/python -m pipenv lock -r'
+    cmd = '.venv/bin/python -m pipenv requirements'
     current = os.popen(cmd).readlines()
     current = wrap_lines(current, 35, '', '  ')
     with open('requirements.txt') as fh:
@@ -69,7 +72,8 @@ def check_requirements():
         print('requirements.txt out of date.')
         print()
         tmp = '{:<35} {:<35}'
-        print(tmp.format('old', 'current'))
+        print(tmp.format('current', 'old'))
+        print('\u2500' * 70)
         for c, o in zip_longest(current, old, fillvalue=''):
             print(tmp.format(c, o))
         print()
@@ -87,7 +91,7 @@ def check_rst(file_paths, ignore):
         for file in files:
             with open(file) as fh:
                 lines = fh.read()
-            result = list(rstcheck.check(lines))
+            result = list(rstchecker.check_source(lines))
             if result:
                 results.append(file, *result)
         return results
@@ -148,10 +152,7 @@ def check_type_hints(path):
 def check_unit_tests(path):
     """Run the unit tests."""
     print('Running unit tests...')
-    loader = ut.TestLoader()
-    tests = loader.discover(path)
-    runner = ut.TextTestRunner()
-    result = runner.run(tests)
+    result = pytest.main(['--capture', 'fd',])
     print('Unit tests complete.')
     return result
 
@@ -186,7 +187,7 @@ def get_module_dir():
     """Get the directory of the module."""
     cwd = os.getcwd()
     dirs = cwd.split('/')
-    return f'{cwd}/{dirs[-1]}'
+    return f'{cwd}/src/{dirs[-1]}'
 
 
 def in_ignore(name, ignore):
@@ -256,7 +257,9 @@ def main():
 
     # Set up the configuration for the checks.
     config = get_config(CONFIG_FILE)
-    doctest_modules = import_modules(config['doctest_modules'].split('\n'))
+    doctest_modules = []
+    if 'doctest_modules' in config:
+        doctest_modules = config['doctest_modules'].split('\n')
     python_files = config['python_files'].split('\n')
     rst_files = config['rst_files'].split('\n')
     unit_tests = config['unit_tests']
@@ -267,7 +270,7 @@ def main():
     result = check_unit_tests(unit_tests)
 
     # Only continue with precommit checks if the unit tests passed.
-    if not result.errors and not result.failures:
+    if result == pytest.ExitCode.OK:
         check_requirements()
         check_doctests(doctest_modules)
         check_style(python_files, ignore)

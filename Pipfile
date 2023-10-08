@@ -12,6 +12,14 @@ pycodestyle = "*"
 mypy = "*"
 rstcheck = "*"
 imgwriter = {path = "./../imgwriter"}
+pytest = "*"
+isort = "*"
+tox = "*"
+sphinx = "*"
+furo = "*"
+build = "*"
+twine = "*"
+imgblender = {file = ".", editable = true}
 
 [requires]
 python_version = "3.9"

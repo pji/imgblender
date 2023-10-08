@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "imgblender"
+version = "0.0.6"
+authors = [
+  { name="pji@mac.com", email="pji@mac.com" },
+]
+description = "A Python package for blending image data."
+readme = "README.rst"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    'numpy',
+]
+
+[project.urls]
+"Homepage" = "https://github.com/pji/imgfilt"
+"Bug Tracker" = "https://github.com/pji/imgfilt/issues"
